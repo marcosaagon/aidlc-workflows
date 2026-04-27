@@ -1,4 +1,6 @@
 <!--
+# Bulkhead
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Bulkhead Pattern
 
 ## Category
+
 Reliability
 
 ## Description
+
 Isolates resources for different parts of the system to prevent failures in one area from consuming all resources. Named after ship bulkheads that contain flooding to one compartment.
 
 ## When to Use
+
 Use bulkhead pattern when you need to prevent resource exhaustion, when different operations have different priorities, or when you want to limit the blast radius of failures.
 
 ## Example
+
 A web application with separate thread pools for critical user-facing requests (100 threads) and background tasks (20 threads). Background task failures cannot starve user request threads.

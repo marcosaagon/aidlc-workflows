@@ -1,4 +1,6 @@
 <!--
+# Event Sourcing
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Event Sourcing
 
 ## Category
+
 Data Management
 
 ## Description
+
 Stores the state of a system as a sequence of events rather than just current state. Every state change is captured as an event, allowing full audit trail and ability to replay events to reconstruct past states.
 
 ## When to Use
+
 Use event sourcing when you need complete audit history, want to replay events for debugging or analysis, or need to support temporal queries about past system states.
 
 ## Example
+
 A banking system storing deposit and withdrawal events instead of just account balances. Current balance is derived by replaying all events, and historical balances can be reconstructed for any point in time.

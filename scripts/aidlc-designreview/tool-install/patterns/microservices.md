@@ -1,4 +1,6 @@
 <!--
+# Microservices
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Microservices
 
 ## Category
+
 System Architecture
 
 ## Description
+
 Structures the application as a collection of loosely coupled, independently deployable services. Each service owns its data, communicates via well-defined APIs, and can be developed and scaled independently.
 
 ## When to Use
+
 Use microservices for large systems with multiple teams, when services need independent scaling, or when different parts of the system have different technology requirements.
 
 ## Example
+
 An e-commerce platform with separate services for user management, product catalog, shopping cart, order processing, and payment. Each service has its own database and can be deployed independently.

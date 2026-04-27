@@ -27,6 +27,7 @@ Cross-platform installation tool for the AIDLC Design Review Hook.
 The AIDLC Design Review Hook is a pre-tool-use hook for Claude Code that automatically reviews design artifacts before code generation. This installation tool sets up the hook in your workspace.
 
 **Features:**
+
 - ✅ Cross-platform support (macOS, Linux, Windows)
 - ✅ Fresh installation and update support
 - ✅ Automatic backup of existing installations
@@ -42,22 +43,26 @@ The AIDLC Design Review Hook is a pre-tool-use hook for Claude Code that automat
 ### Required
 
 **All Platforms:**
+
 - Bash 4.0 or higher
 
 **Windows:**
+
 - Git Bash (recommended) OR WSL (Windows Subsystem for Linux)
-- Download Git Bash: https://git-scm.com/download/win
+- Download Git Bash: <https://git-scm.com/download/win>
 
 ### Optional (for full functionality)
 
 **Configuration Parsing:**
-- `yq` v4+ (preferred): https://github.com/mikefarah/yq#install
+
+- `yq` v4+ (preferred): <https://github.com/mikefarah/yq#install>
 - Python 3 with PyYAML (fallback): `pip install pyyaml`
 - If neither available, hook uses hardcoded defaults (still functional)
 
 **Installation Commands:**
 
 **macOS:**
+
 ```bash
 brew install yq
 brew install python3
@@ -65,6 +70,7 @@ pip3 install pyyaml
 ```
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 sudo chmod +x /usr/local/bin/yq
@@ -73,8 +79,9 @@ pip3 install pyyaml
 ```
 
 **Windows:**
-- Download yq from: https://github.com/mikefarah/yq/releases
-- Install Python: https://www.python.org/downloads/
+
+- Download yq from: <https://github.com/mikefarah/yq/releases>
+- Install Python: <https://www.python.org/downloads/>
 - Install PyYAML: `pip install pyyaml`
 
 ---
@@ -90,6 +97,7 @@ If you already have an AIDLC project and want to add the design review hook capa
 You have two options:
 
 **Option A: Clone the design-reviewer repository** (recommended if you want updates):
+
 ```bash
 # Clone to a temporary location
 git clone <design-reviewer-repo-url> /tmp/design-reviewer
@@ -105,13 +113,15 @@ rm -rf /tmp/design-reviewer
 ```
 
 **Option B: Download just the tool-install directory** (if you only need the hook files):
+
 - Download the `tool-install/` directory from the design-reviewer repository
 - Place it in the root of your AIDLC project
 
 #### Step 2: Verify Your AIDLC Project Structure
 
 Ensure your project has the standard AIDLC structure:
-```
+
+```text
 your-aidlc-project/
 ├── aidlc-docs/
 │   ├── construction/
@@ -125,21 +135,25 @@ your-aidlc-project/
 From your AIDLC project root:
 
 **macOS:**
+
 ```bash
 ./tool-install/install-mac.sh
 ```
 
 **Linux:**
+
 ```bash
 ./tool-install/install-linux.sh
 ```
 
 **Windows PowerShell:**
+
 ```powershell
 .\tool-install\install-windows.ps1
 ```
 
 **Windows Git Bash/WSL:**
+
 ```bash
 ./tool-install/install-windows.sh
 ```
@@ -196,6 +210,7 @@ ls -la reports/design_review/
    - Look for design review prompts during code generation stages
 
 2. **Test with real AI** (requires AWS Bedrock access):
+
    ```bash
    USE_REAL_AI=1 TEST_MODE=1 .claude/hooks/pre-tool-use
    ```
@@ -208,15 +223,18 @@ ls -la reports/design_review/
 #### Troubleshooting Existing Project Installation
 
 **Issue: "aidlc-docs not found"**
+
 - Ensure you're running the installer from the AIDLC project root
 - Verify `aidlc-docs/` directory exists with proper structure
 
 **Issue: Hook doesn't detect design artifacts**
+
 - Verify construction units exist: `ls aidlc-docs/construction/unit-*/`
 - Check that design markdown files exist in unit subdirectories
 - Ensure filenames match expected patterns (see config)
 
 **Issue: Audit logging fails**
+
 - Create audit file if missing: `touch aidlc-docs/audit.md`
 - Verify write permissions: `ls -la aidlc-docs/audit.md`
 - Check `logging.audit_file` path in `.claude/review-config.yaml`
@@ -226,11 +244,13 @@ ls -la reports/design_review/
 ### macOS
 
 1. **Navigate to workspace root:**
+
    ```bash
    cd /path/to/your/workspace
    ```
 
 2. **Run installer:**
+
    ```bash
    ./tool-install/install-mac.sh
    ```
@@ -243,6 +263,7 @@ ls -la reports/design_review/
    - Enable gap analysis? (yes/no) [yes]
 
 4. **Verify installation:**
+
    ```bash
    TEST_MODE=1 .claude/hooks/pre-tool-use
    ```
@@ -250,11 +271,13 @@ ls -la reports/design_review/
 ### Linux
 
 1. **Navigate to workspace root:**
+
    ```bash
    cd /path/to/your/workspace
    ```
 
 2. **Run installer:**
+
    ```bash
    ./tool-install/install-linux.sh
    ```
@@ -262,6 +285,7 @@ ls -la reports/design_review/
 3. **Follow prompts** (same as macOS)
 
 4. **Verify installation:**
+
    ```bash
    TEST_MODE=1 .claude/hooks/pre-tool-use
    ```
@@ -271,16 +295,19 @@ ls -la reports/design_review/
 1. **Open PowerShell as Administrator**
 
 2. **Navigate to workspace root:**
+
    ```powershell
    cd C:\path\to\your\workspace
    ```
 
 3. **Enable script execution (if needed):**
+
    ```powershell
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
    ```
 
 4. **Run installer:**
+
    ```powershell
    .\tool-install\install-windows.ps1
    ```
@@ -288,6 +315,7 @@ ls -la reports/design_review/
 5. **Follow prompts** (same as macOS)
 
 6. **Verify installation (Git Bash):**
+
    ```bash
    TEST_MODE=1 ./.claude/hooks/pre-tool-use
    ```
@@ -297,6 +325,7 @@ ls -la reports/design_review/
 1. **Open Git Bash or WSL terminal**
 
 2. **Navigate to workspace root:**
+
    ```bash
    cd /c/path/to/your/workspace  # Git Bash
    # OR
@@ -304,6 +333,7 @@ ls -la reports/design_review/
    ```
 
 3. **Run installer:**
+
    ```bash
    ./tool-install/install-windows.sh
    ```
@@ -311,6 +341,7 @@ ls -la reports/design_review/
 4. **Follow prompts** (same as macOS)
 
 5. **Verify installation:**
+
    ```bash
    TEST_MODE=1 .claude/hooks/pre-tool-use
    ```
@@ -353,16 +384,19 @@ logging:
 ### Review Modes
 
 **Comprehensive Mode (Default):**
+
 - All 3 agents enabled (critique + alternatives + gaps)
 - Execution time: ~2-3 minutes with real AI
 - Recommended for: Production, critical features
 
 **Fast Mode (Opt-Out):**
+
 ```yaml
 review:
   enable_alternatives: false
   enable_gap_analysis: false
 ```
+
 - Critique agent only
 - Execution time: ~20 seconds with real AI
 - Recommended for: Development, rapid iteration
@@ -370,6 +404,7 @@ review:
 ### Editing Configuration
 
 **macOS/Linux:**
+
 ```bash
 nano .claude/review-config.yaml
 # OR
@@ -377,6 +412,7 @@ vim .claude/review-config.yaml
 ```
 
 **Windows:**
+
 ```powershell
 notepad .claude\review-config.yaml
 ```
@@ -390,17 +426,20 @@ The installer automatically runs validation tests. To manually validate:
 ### Check File Integrity
 
 **macOS/Linux:**
+
 ```bash
 ls -R .claude/
 ```
 
 **Windows:**
+
 ```powershell
 Get-ChildItem -Recurse .claude\
 ```
 
 **Expected structure:**
-```
+
+```text
 .claude/
 ├── hooks/
 │   └── pre-tool-use
@@ -421,11 +460,13 @@ Get-ChildItem -Recurse .claude\
 ### Run Test Review
 
 **All Platforms:**
+
 ```bash
 TEST_MODE=1 .claude/hooks/pre-tool-use
 ```
 
 This will:
+
 - Generate a test report in `reports/design_review/`
 - Not block or prompt user
 - Validate end-to-end functionality
@@ -437,11 +478,13 @@ This will:
 To update an existing installation:
 
 1. **Back up your configuration (optional):**
+
    ```bash
    cp .claude/review-config.yaml .claude/review-config.yaml.backup
    ```
 
 2. **Run installer again:**
+
    ```bash
    # macOS
    ./tool-install/install-mac.sh
@@ -455,11 +498,13 @@ To update an existing installation:
    # Windows Git Bash/WSL
    ./tool-install/install-windows.sh
    ```
+
    - The installer automatically detects existing installation
    - Creates timestamped backup: `.claude.backup.YYYYMMDD_HHMMSS`
    - Prompts for new configuration values
 
 3. **Restore custom config (if needed):**
+
    ```bash
    cp .claude/review-config.yaml.backup .claude/review-config.yaml
    ```
@@ -467,11 +512,13 @@ To update an existing installation:
 ### Automatic Backup
 
 Installer creates backup before updating:
-```
+
+```text
 .claude.backup.20260327_170500/
 ```
 
 To restore from backup:
+
 ```bash
 rm -rf .claude
 mv .claude.backup.20260327_170500 .claude
@@ -484,18 +531,21 @@ mv .claude.backup.20260327_170500 .claude
 To remove the AIDLC Design Review Hook:
 
 **macOS/Linux:**
+
 ```bash
 rm -rf .claude
 rm -rf .claude.backup.*  # Optional: remove backups
 ```
 
 **Windows PowerShell:**
+
 ```powershell
 Remove-Item -Recurse -Force .claude
 Remove-Item -Recurse -Force .claude.backup.*  # Optional
 ```
 
 **Note:** This does NOT remove:
+
 - Source files in `tool-install/`
 - Generated reports in `reports/design_review/`
 - Audit logs in `aidlc-docs/audit.md`
@@ -509,6 +559,7 @@ Remove-Item -Recurse -Force .claude.backup.*  # Optional
 #### 1. "Bash 4.0 required" error
 
 **macOS:**
+
 ```bash
 # Check version
 bash --version
@@ -523,6 +574,7 @@ chsh -s /usr/local/bin/bash     # Intel
 ```
 
 **Linux:**
+
 ```bash
 # Check version
 bash --version
@@ -533,12 +585,14 @@ sudo apt-get install --only-upgrade bash
 ```
 
 **Windows:**
+
 - Update Git Bash to latest version
 - Or use WSL with recent Ubuntu/Debian distribution
 
 #### 2. "Permission denied" errors
 
 **macOS/Linux:**
+
 ```bash
 chmod +x tool-install/install-mac.sh         # macOS
 chmod +x tool-install/install-linux.sh       # Linux
@@ -546,6 +600,7 @@ chmod +x tool-install/install-windows.sh     # Windows (Git Bash/WSL)
 ```
 
 **Windows PowerShell:**
+
 ```powershell
 # Run as Administrator
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -554,6 +609,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 #### 3. Hook not executing
 
 **Check hook permissions:**
+
 ```bash
 ls -l .claude/hooks/pre-tool-use
 # Should show: -rwxr-xr-x
@@ -563,6 +619,7 @@ chmod +x .claude/hooks/pre-tool-use
 ```
 
 **Check Claude Code hook configuration:**
+
 - Hook should be automatically detected in `.claude/hooks/`
 - No additional configuration required in Claude Code
 
@@ -571,12 +628,14 @@ chmod +x .claude/hooks/pre-tool-use
 This is **not an error**. The hook will use Python fallback or defaults.
 
 **To suppress warnings:**
+
 - Install yq: see [Prerequisites](#optional-for-full-functionality)
 - OR install Python PyYAML: `pip install pyyaml`
 
 #### 5. YAML parsing errors
 
 **Validate YAML syntax:**
+
 ```bash
 # With yq
 yq eval . .claude/review-config.yaml
@@ -586,6 +645,7 @@ python3 -c "import yaml; yaml.safe_load(open('.claude/review-config.yaml'))"
 ```
 
 **Common issues:**
+
 - Incorrect indentation (use spaces, not tabs)
 - Missing quotes around string values with special characters
 - Trailing commas (not allowed in YAML)
@@ -593,10 +653,12 @@ python3 -c "import yaml; yaml.safe_load(open('.claude/review-config.yaml'))"
 #### 6. Windows line ending issues (Git Bash)
 
 **Symptoms:**
+
 - "bad interpreter: /usr/bin/env: bash^M: no such file or directory"
 - Scripts fail with syntax errors
 
 **Fix:**
+
 ```bash
 # Configure Git to use Unix line endings
 git config --global core.autocrlf input
@@ -608,11 +670,13 @@ git config --global core.autocrlf input
 #### 7. Report not generated
 
 **Check report directory:**
+
 ```bash
 ls -la reports/design_review/
 ```
 
 **Check permissions:**
+
 ```bash
 # Create directory if missing
 mkdir -p reports/design_review
@@ -622,6 +686,7 @@ chmod 755 reports/design_review
 ```
 
 **Check configuration:**
+
 ```yaml
 reports:
   output_dir: reports/design_review  # Correct
@@ -635,16 +700,19 @@ reports:
 ### Environment Variables
 
 **TEST_MODE**: Skip bypass detection and user prompts
+
 ```bash
 TEST_MODE=1 .claude/hooks/pre-tool-use
 ```
 
 **USE_REAL_AI**: Use real AWS Bedrock API instead of mock responses
+
 ```bash
 USE_REAL_AI=1 .claude/hooks/pre-tool-use
 ```
 
 **LOG_LEVEL**: Override logging level
+
 ```bash
 LOG_LEVEL=debug .claude/hooks/pre-tool-use
 ```
@@ -677,6 +745,7 @@ For issues, questions, or contributions:
 **License**: MIT License
 
 **Installer Scripts:**
+
 - `install-mac.sh` - macOS installer
 - `install-linux.sh` - Linux installer (symlink to macOS version)
 - `install-windows.ps1` - Windows PowerShell installer

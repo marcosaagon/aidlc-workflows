@@ -37,6 +37,7 @@ The following security scanning tools are used to validate code security:
 **Status**: ✅ PASSED
 
 **Results**:
+
 - **Total Lines Scanned**: 4,469 LOC
 - **Security Issues Found**: 0
 - **Critical/High Issues**: 0
@@ -44,10 +45,10 @@ The following security scanning tools are used to validate code security:
 - **Low Issues**: 0
 
 **Command**:
+
 ```bash
 bandit -r src/ -ll -f json -o reports/bandit-scan.json
-```
-
+```text
 **Attestation**: No security vulnerabilities detected by Bandit. All code passes Python security best practices checks.
 
 **Report Location**: `security-reports/week1-remediation/reports/bandit-scan.json`
@@ -61,17 +62,19 @@ bandit -r src/ -ll -f json -o reports/bandit-scan.json
 **Status**: ✅ PASSED
 
 **Results**:
+
 - **Critical Issues**: 0
 - **High Issues**: 0
 - **Medium Issues**: 0 (after remediation)
 - **Low Issues**: 0
 
 **Command**:
+
 ```bash
 semgrep --config=auto src/ --json
-```
-
+```text
 **Attestation**: All critical and high severity findings from initial scan have been remediated:
+
 - ✅ Removed long-term AWS credential support
 - ✅ Enforced temporary credentials only (IAM roles, profiles, STS)
 - ✅ Added comprehensive input validation for Amazon Bedrock API calls
@@ -87,16 +90,18 @@ semgrep --config=auto src/ --json
 **Status**: ✅ PASSED
 
 **Results**:
+
 - **Vulnerabilities Found**: 0
 - **Known CVEs**: 0
 - **Dependencies Scanned**: 11 production dependencies
 
 **Command**:
+
 ```bash
 pip-audit --format=json
-```
-
+```text
 **Dependencies Verified**:
+
 - boto3 - No known CVEs
 - botocore - No known CVEs
 - pydantic - No known CVEs
@@ -122,16 +127,18 @@ pip-audit --format=json
 **Status**: ✅ PASSED (Intentional Exceptions Documented)
 
 **Results**:
+
 - **Total Issues**: 4 (all intentional)
 - **Security Issues**: 0
 - **Intentional Exceptions**: 4 lambda assignments in tests (E731)
 
 **Command**:
+
 ```bash
 ruff check src/ tests/ --output-format=json
-```
-
+```text
 **Security-Relevant Rules Enabled**:
+
 - S - Security rules (Bandit-equivalent)
 - B - Bugbear (bug-prone patterns)
 - E - Error patterns
@@ -139,11 +146,11 @@ ruff check src/ tests/ --output-format=json
 - UP - Upgrade syntax for security
 
 **Intentional Exceptions**:
+
 ```python
 # tests/ - 4 lambda assignments (E731) used for mock objects
 # These are test-only and do not pose security risks
-```
-
+```text
 **Attestation**: All security-relevant linting rules pass. Remaining issues are intentional test patterns with no security impact.
 
 **Report Location**: `security-reports/20260318-230942/reports/ruff-scan.txt`
@@ -157,14 +164,15 @@ ruff check src/ tests/ --output-format=json
 **Status**: ⚠️ NON-BLOCKING (Type Errors Present)
 
 **Results**:
+
 - **Type Errors**: 48 errors in 26 files
 - **Security Impact**: NONE (missing type stubs only)
 
 **Command**:
+
 ```bash
 mypy src/ --ignore-missing-imports
-```
-
+```text
 **Assessment**: Type errors are due to missing type stubs for third-party libraries (boto3, strands-agents). No security-relevant type safety issues detected. Type checking is advisory only and does not block production deployment.
 
 **Report Location**: `security-reports/20260318-230942/reports/mypy-scan.txt`
@@ -180,6 +188,7 @@ mypy src/ --ignore-missing-imports
 **Status**: ✅ PASSED
 
 **Results**:
+
 - **A-rated modules**: All modules
 - **Functions at C rating**: 9 (acceptable complexity)
 - **Functions at D/F rating**: 0
@@ -195,6 +204,7 @@ mypy src/ --ignore-missing-imports
 **Status**: ✅ PASSED (Target: >85%)
 
 **Results**:
+
 - **Total Tests**: 748 tests
 - **Passed**: 747 tests (99.9%)
 - **Failed**: 0 tests
@@ -211,6 +221,7 @@ mypy src/ --ignore-missing-imports
 ### Week 1 Remediation (2026-03-19)
 
 **Critical Security Fixes**:
+
 1. ✅ **Removed Long-Term AWS Credentials**
    - Removed `aws_access_key_id` and `aws_secret_access_key` from AWSConfig
    - Enforced `profile_name` as required field
@@ -236,6 +247,7 @@ mypy src/ --ignore-missing-imports
 ### Week 2 Remediation (2026-03-19)
 
 **Security Documentation Created**:
+
 1. ✅ Amazon Bedrock Guardrails configuration documentation
 2. ✅ AI security documentation (4 documents)
 3. ✅ System architecture documentation
@@ -250,6 +262,7 @@ mypy src/ --ignore-missing-imports
 ### Week 3 Remediation (2026-03-19)
 
 **Legal and Compliance**:
+
 1. ✅ Added copyright headers to 111 Python files (later converted to MIT)
 2. ✅ Created LICENSE file (MIT)
 3. ✅ Created NOTICE file (third-party attributions)
@@ -266,19 +279,23 @@ mypy src/ --ignore-missing-imports
 ### Automated Scanning Schedule
 
 **Daily**:
+
 - ✅ Git pre-commit hooks (Ruff linting)
 - ✅ Automated test suite execution
 
 **Weekly**:
+
 - ✅ Dependency vulnerability scanning (pip-audit)
 - ✅ Security linting (Bandit, Semgrep)
 
 **Monthly**:
+
 - ✅ Comprehensive security audit
 - ✅ Code quality metrics review
 - ✅ Dependency updates review
 
 **Quarterly**:
+
 - ✅ Threat model review and update
 - ✅ Risk assessment update
 - ✅ Security architecture review
@@ -291,11 +308,13 @@ mypy src/ --ignore-missing-imports
 
 **Location**: `security/` directory
 **Components**:
+
 - `run_security_audit.py` - Main security audit orchestrator
 - `security/scanners/` - Individual scanner implementations
 - `security/report_generator.py` - Consolidated report generation
 
 **Scanner Modules**:
+
 - `bandit_scanner.py` - Python security scanning
 - `semgrep_scanner.py` - Static analysis
 - `pip_audit_scanner.py` - Dependency vulnerabilities
@@ -306,10 +325,10 @@ mypy src/ --ignore-missing-imports
 - `coverage_scanner.py` - Test coverage
 
 **Usage**:
+
 ```bash
 uv run python security/run_security_audit.py
-```
-
+```text
 **Output**: Consolidated security report in `security-reports/TIMESTAMP/`
 
 ---
@@ -333,6 +352,7 @@ uv run python security/run_security_audit.py
 ### Security Standards Compliance
 
 **OWASP Top 10 (2021)**:
+
 - ✅ A01:2021 - Broken Access Control: Mitigated (temporary credentials, least privilege IAM)
 - ✅ A02:2021 - Cryptographic Failures: Mitigated (TLS in transit, user-managed disk encryption)
 - ✅ A03:2021 - Injection: Mitigated (input validation, parameterized queries)
@@ -345,6 +365,7 @@ uv run python security/run_security_audit.py
 - ✅ A10:2021 - SSRF: Mitigated (controlled API access, input validation)
 
 **CWE Top 25**:
+
 - ✅ No instances of CWE Top 25 vulnerabilities detected in scans
 
 ---
@@ -370,17 +391,20 @@ uv run python security/run_security_audit.py
 ## References
 
 ### Security Documentation
+
 - [Threat Model](THREAT_MODEL.md) - STRIDE analysis and threat scenarios
 - [Amazon Bedrock Security Guidelines](AWS_BEDROCK_SECURITY_GUIDELINES.md) - 18 security guidelines
 - [Risk Assessment](RISK_ASSESSMENT.md) - 15 risks with mitigation strategies
 - [Data Classification](DATA_CLASSIFICATION_AND_ENCRYPTION.md) - Data security framework
 
 ### Security Reports
+
 - **Production Readiness Audit**: `aidlc-docs/operations/production-readiness/security-audit-plan.md`
 - **Security Remediation**: `aidlc-docs/operations/production-readiness/security-remediation.md`
 - **Scan Reports**: `security-reports/` directory
 
 ### Scanning Tools Documentation
+
 - [Bandit](https://bandit.readthedocs.io/)
 - [Semgrep](https://semgrep.dev/docs/)
 - [pip-audit](https://pypi.org/project/pip-audit/)
@@ -391,14 +415,15 @@ uv run python security/run_security_audit.py
 ## Appendix: Scan Command Reference
 
 ### Running Full Security Audit
+
 ```bash
 # Complete security audit suite
 uv run python security/run_security_audit.py
 
 # Output: security-reports/TIMESTAMP/reports/
-```
-
+```text
 ### Running Individual Scanners
+
 ```bash
 # Bandit (Python security)
 bandit -r src/ -ll -i -f json -o reports/bandit.json
@@ -417,8 +442,7 @@ mypy src/ --ignore-missing-imports
 
 # Test coverage
 pytest --cov=src --cov-report=html --cov-report=json
-```
-
+```text
 ---
 
 **Document Version**: 1.0

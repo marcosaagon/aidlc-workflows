@@ -1,4 +1,6 @@
 <!--
+# Message Broker
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Message Broker
 
 ## Category
+
 Communication
 
 ## Description
+
 An intermediary component that receives messages from producers and delivers them to consumers. Enables asynchronous communication, decouples services, and provides features like message persistence and routing.
 
 ## When to Use
+
 Use message broker for asynchronous processing, when services need to be decoupled, or when you need guaranteed message delivery and complex routing patterns.
 
 ## Example
+
 An e-commerce system using RabbitMQ or Kafka where order service publishes messages to a broker, and inventory, shipping, and notification services consume messages independently at their own pace.

@@ -1,4 +1,6 @@
 <!--
+# Layered Architecture
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Layered Architecture
 
 ## Category
+
 System Architecture
 
 ## Description
+
 Organizes the application into horizontal layers where each layer has a specific responsibility and dependencies flow in one direction (typically top-down). Common layers include presentation, business logic, data access, and infrastructure.
 
 ## When to Use
+
 Use layered architecture when you need clear separation of concerns, want to enforce dependency rules, or are building enterprise applications with well-defined responsibility boundaries.
 
 ## Example
+
 A web application with presentation layer (UI controllers), service layer (business logic), repository layer (data access), and domain layer (entities and business rules). Each layer only depends on layers below it.

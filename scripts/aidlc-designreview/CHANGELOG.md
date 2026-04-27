@@ -152,20 +152,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Project Structure (v1.0.0)
 
 **Production Code**:
+
 - 50 Python files, ~5,400 LOC
 - 5 units: foundation, validation, parsing, ai_review, reporting/orchestration/cli
 
 **Configuration**:
+
 - 2 YAML config files (default + example)
 - 15 pattern definitions
 - 3 agent system prompts
 - 2 Jinja2 report templates
 
 **Tests**:
+
 - 61 test files, ~10,800 LOC
 - 743 tests total
 
 **Dependencies**:
+
 - Runtime: 11 packages (pydantic, boto3, strands-agents, backoff, rich, jinja2, click, etc.)
 - Test: pytest, mypy, coverage
 
@@ -176,6 +180,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added - Unit Development (Pre-Release)
 
 **Unit 1: Foundation & Configuration**
+
 - Configuration management with validation
 - Logging infrastructure with file rotation
 - Exception hierarchy with actionable error messages
@@ -184,12 +189,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - File validation utilities
 
 **Unit 2: Validation & Discovery**
+
 - AIDLC directory structure validation
 - Design artifact discovery by type
 - Artifact loading and normalization
 - ~122 unit tests
 
 **Unit 3: Parsing**
+
 - Content-based artifact parsing
 - Application design parser
 - Functional design parser
@@ -197,6 +204,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ~71 unit tests
 
 **Unit 4: AI Review**
+
 - AWS Bedrock client with secure credential handling
 - Three specialized agents (critique, alternatives, gap)
 - Agent orchestration with parallel execution
@@ -205,6 +213,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ~103 unit tests
 
 **Unit 5: Reporting, Orchestration & CLI**
+
 - Report builder with quality scoring
 - Markdown and HTML formatters
 - ReviewOrchestrator pipeline (6 stages)
@@ -224,6 +233,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Security & Compliance Timeline
 
 ### 2026-03-18: Production Readiness
+
 - Security audit complete (Ruff, MyPy, Bandit, pip-audit, Vulture, Radon)
 - 0 vulnerabilities found (Bandit: CLEAN, pip-audit: CLEAN)
 - Code quality: Cyclomatic complexity avg 2.74 (excellent)
@@ -231,11 +241,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All immediate fixes applied
 
 ### 2026-03-19: Security Hardening (3 Weeks)
+
 - **Week 1**: Removed long-term AWS credentials, enforced temporary credentials only
 - **Week 2**: Amazon Bedrock Guardrails documentation, AI security package (4 docs), architecture documentation (4 docs)
 - **Week 3**: Copyright/licensing (124 files), legal disclaimers, AWS service naming standards, risk assessment
 
 ### 2026-03-19: Holmes Scan Remediation (3 Phases)
+
 - **Phase 1**: Critical security issues (5 tasks) - Security scan documentation, test credential removal, IAM policy wildcards, S3 security, copyright headers
 - **Phase 2**: Documentation and compliance (6 tasks) - Formal architecture diagrams, threat model, shared responsibility model, compliance claims, actionable steps, GenAI controls
 - **Phase 3**: Content quality (3 tasks) - Superlative language removal, AWS service naming fixes
@@ -245,9 +257,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Known Issues & Future Enhancements
 
 ### Known Issues
+
 - None critical (all production blockers resolved in v1.0.0)
 
 ### Future Enhancements
+
 - PDF report format support
 - Additional AI agents (security, performance, cost optimization)
 - Parallel agent execution for faster reviews (currently sequential)
@@ -260,11 +274,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History Summary
 
-| Version | Date | Description |
-|---------|------|-------------|
-| 1.1.0 | 2026-03-27 | Hook integration + multi-agent deep analysis by default |
-| 1.0.0 | 2026-03-12 | Initial release - CLI tool with 3 agents |
-| 0.9.0 | 2026-03-09 | Pre-release development (5 units) |
+| Version   | Date         | Description                                               |
+| --------- | ------------ | --------------------------------------------------------- |
+| 1.1.0     | 2026-03-27   | Hook integration + multi-agent deep analysis by default   |
+| 1.0.0     | 2026-03-12   | Initial release - CLI tool with 3 agents                  |
+| 0.9.0     | 2026-03-09   | Pre-release development (5 units)                         |
 
 ---
 

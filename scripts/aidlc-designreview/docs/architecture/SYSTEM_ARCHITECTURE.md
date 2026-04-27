@@ -1,4 +1,5 @@
-<!--
+<!-- markdownlint-disable MD041 MD060 -->
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,6 +34,7 @@ SOFTWARE.
 The AIDLC (AI-Driven Development Life Cycle) Design Reviewer is an automated technical design review system that uses Amazon Bedrock with Anthropic Claude models to analyze software architecture documents and provide structured feedback with security, quality, and best practice recommendations.
 
 **Key Characteristics**:
+
 - **Type**: Command-line application
 - **Deployment**: Standalone Python application
 - **AI Provider**: Amazon Bedrock (Claude models)
@@ -47,7 +49,7 @@ The AIDLC (AI-Driven Development Life Cycle) Design Reviewer is an automated tec
 
 **ASCII Diagram** (terminal-friendly fallback):
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                          AIDLC DESIGN REVIEWER                  │
 │                       (Python CLI Application)                   │
@@ -79,9 +81,9 @@ The AIDLC (AI-Driven Development Life Cycle) Design Reviewer is an automated tec
                     │  • CloudWatch       │
                     │  • GuardRails       │
                     └─────────────────────┘
-```
-
+```text
 **External Dependencies**:
+
 - Amazon Bedrock API (model inference)
 - AWS IAM (authentication/authorization)
 - CloudWatch (logging and metrics)
@@ -99,7 +101,7 @@ The AIDLC (AI-Driven Development Life Cycle) Design Reviewer is an automated tec
 
 The system follows a 5-layer architecture pattern:
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────┐
 │  LAYER 1: CLI Interface                                        │
 │  • Command parsing (Click framework)                           │
@@ -150,8 +152,7 @@ The system follows a 5-layer architecture pattern:
 │  • AWS IAM                                                     │
 │  • CloudWatch Logs                                             │
 └───────────────────────────────────────────────────────────────┘
-```
-
+```text
 ---
 
 ## Component Architecture
@@ -161,18 +162,21 @@ The system follows a 5-layer architecture pattern:
 **Purpose**: Provide core infrastructure services
 
 **Components**:
+
 - `ConfigManager`: Singleton configuration management
 - `Logger`: Structured logging with credential scrubbing
 - `PatternLibrary`: Design pattern definitions
 - `PromptManager`: AI prompt template management
 
 **Key Responsibilities**:
+
 - Load and validate YAML configuration
 - Manage AWS credentials (profile-based only)
 - Provide immutable configuration access
 - Scrub sensitive data from logs
 
 **Security Controls**:
+
 - ✅ Temporary credentials only (no long-term keys)
 - ✅ Credential scrubbing in logs
 - ✅ Immutable configuration (Pydantic frozen models)
@@ -182,18 +186,21 @@ The system follows a 5-layer architecture pattern:
 **Purpose**: Discover and validate design documents
 
 **Components**:
+
 - `ArtifactScanner`: File system scanner
 - `ArtifactClassifier`: AI-powered document classification
 - `ArtifactLoader`: Content extraction
 - `StructureValidator`: AIDLC structure validation
 
 **Key Responsibilities**:
+
 - Scan aidlc-docs/ directory for artifacts
 - Classify artifacts using Claude models
 - Load artifact content
 - Validate AIDLC folder structure
 
 **Security Controls**:
+
 - ✅ Input validation before AI classification
 - ✅ File type restrictions (.md only)
 - ✅ Path traversal prevention
@@ -203,16 +210,19 @@ The system follows a 5-layer architecture pattern:
 **Purpose**: Parse structured design documents
 
 **Components**:
+
 - `ApplicationDesignParser`: Parse application-design artifacts
 - `FunctionalDesignParser`: Parse functional-design artifacts
 - `TechnicalEnvironmentParser`: Parse technical environment
 
 **Key Responsibilities**:
+
 - Extract structured data from Markdown
 - Build design data models
 - Handle parsing errors gracefully
 
 **Security Controls**:
+
 - ✅ Safe parsing (no eval/exec)
 - ✅ Input size limits
 - ✅ Error handling (no sensitive data in errors)
@@ -222,6 +232,7 @@ The system follows a 5-layer architecture pattern:
 **Purpose**: Perform AI-powered design review
 
 **Components**:
+
 - `BaseAgent`: Abstract base class for AI agents
 - `CritiqueAgent`: Design critique and issue identification
 - `AlternativesAgent`: Alternative approach suggestions
@@ -229,12 +240,14 @@ The system follows a 5-layer architecture pattern:
 - `ResponseParser`: Parse structured AI responses
 
 **Key Responsibilities**:
+
 - Invoke Amazon Bedrock models
 - Parse and validate AI responses
 - Retry on transient failures
 - Track token usage
 
 **Security Controls**:
+
 - ✅ Input validation (type, size, content)
 - ✅ Output filtering (parse only expected structure)
 - ✅ Amazon Bedrock Guardrails (optional)
@@ -246,18 +259,21 @@ The system follows a 5-layer architecture pattern:
 **Purpose**: Generate structured review reports
 
 **Components**:
+
 - `ReportBuilder`: Build report data models
 - `MarkdownFormatter`: Generate Markdown reports
 - `HTMLFormatter`: Generate HTML reports
 - `TemplateEnv`: Jinja2 template management
 
 **Key Responsibilities**:
+
 - Calculate quality scores
 - Build executive summaries
 - Format findings and recommendations
 - Render HTML/Markdown reports
 
 **Security Controls**:
+
 - ✅ Template autoescaping (XSS prevention)
 - ✅ No sensitive data in reports
 - ✅ Output validation
@@ -274,7 +290,7 @@ The system follows a 5-layer architecture pattern:
 
 **ASCII Diagram** (terminal-friendly fallback):
 
-```
+```text
 ┌──────────┐
 │  User    │ design-reviewer --project aidlc-docs/
 └────┬─────┘
@@ -345,15 +361,14 @@ The system follows a 5-layer architecture pattern:
 │  • design-review-report.md                                   │
 │  • Exit code: 0 (success) / 1 (errors)                      │
 └──────────────────────────────────────────────────────────────┘
-```
-
+```text
 ---
 
 ## Security Architecture
 
 ### Authentication and Authorization
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │  USER                                                       │
 │  • Runs CLI command                                        │
@@ -392,20 +407,19 @@ The system follows a 5-layer architecture pattern:
 │  • Guardrail enforcement                                    │
 │  • Usage metering                                           │
 └────────────────────────────────────────────────────────────┘
-```
-
+```text
 ### Data Protection Layers
 
-| Layer | Protection Mechanism | Status |
-|-------|---------------------|---------|
-| **Transport** | TLS 1.2+ encryption | ✅ Enforced |
-| **Authentication** | AWS IAM temporary credentials | ✅ Enforced |
-| **Authorization** | Resource-level IAM policies | ✅ Configured |
-| **Input Validation** | Type and size checks | ✅ Implemented |
-| **Output Filtering** | Structured parsing only | ✅ Implemented |
-| **Content Filtering** | Amazon Bedrock Guardrails | ⚠️ Optional |
-| **Logging** | Credential scrubbing | ✅ Implemented |
-| **At-Rest Encryption** | N/A (transient processing) | ℹ️ Not applicable |
+| Layer                    | Protection Mechanism            | Status              |
+| -------------------------- | --------------------------------- | --------------------- |
+| **Transport**            | TLS 1.2+ encryption             | ✅ Enforced         |
+| **Authentication**       | AWS IAM temporary credentials   | ✅ Enforced         |
+| **Authorization**        | Resource-level IAM policies     | ✅ Configured       |
+| **Input Validation**     | Type and size checks            | ✅ Implemented      |
+| **Output Filtering**     | Structured parsing only         | ✅ Implemented      |
+| **Content Filtering**    | Amazon Bedrock Guardrails       | ⚠️ Optional         |
+| **Logging**              | Credential scrubbing            | ✅ Implemented      |
+| **At-Rest Encryption**   | N/A (transient processing)      | ℹ️ Not applicable   |
 
 ---
 
@@ -429,19 +443,20 @@ AWS manages the underlying infrastructure for Amazon Bedrock and related service
 
 Customers deploying AIDLC Design Reviewer are responsible for:
 
-| Responsibility Area | Implementation Status | Customer Action Required |
-|--------------------|-----------------------|-------------------------|
-| **Application Deployment** | ✅ CLI application provided | ⚠️ Install and configure on secure workstation |
-| **IAM Configuration** | ✅ Example policies provided | ⚠️ Create IAM roles with least-privilege<br/>⚠️ Enable MFA for AWS console access |
-| **Credential Management** | ✅ Temporary credentials enforced | ⚠️ Configure AWS profiles (~/.aws/credentials)<br/>⚠️ Rotate credentials regularly |
-| **Workstation Security** | ❌ Not managed by application | ❌ Enable full disk encryption<br/>❌ Install OS security patches<br/>❌ Use antivirus/EDR software |
-| **Network Security** | ❌ Not managed by application | ❌ Use secure networks (avoid public WiFi)<br/>⚠️ Consider VPN for remote access |
-| **Data Classification** | ✅ Guidelines provided | ❌ Classify design documents<br/>❌ Determine appropriate handling |
-| **Logging & Monitoring** | ✅ Local logs, ⚠️ CloudWatch optional | ⚠️ Enable CloudWatch logging<br/>⚠️ Monitor for unusual activity |
-| **Incident Response** | ❌ Not provided | ❌ Define incident response procedures<br/>⚠️ Monitor CloudTrail for unauthorized access |
-| **Compliance** | ❌ Customer-specific | ❌ Perform compliance assessments<br/>❌ Implement additional controls as needed |
+| Responsibility Area          | Implementation Status                  | Customer Action Required                                                                            |
+| ------------------------------ | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Application Deployment**   | ✅ CLI application provided            | ⚠️ Install and configure on secure workstation                                                      |
+| **IAM Configuration**        | ✅ Example policies provided           | ⚠️ Create IAM roles with least-privilege<br/>⚠️ Enable MFA for AWS console access                   |
+| **Credential Management**    | ✅ Temporary credentials enforced      | ⚠️ Configure AWS profiles (~/.aws/credentials)<br/>⚠️ Rotate credentials regularly                  |
+| **Workstation Security**     | ❌ Not managed by application          | ❌ Enable full disk encryption<br/>❌ Install OS security patches<br/>❌ Use antivirus/EDR software |
+| **Network Security**         | ❌ Not managed by application          | ❌ Use secure networks (avoid public WiFi)<br/>⚠️ Consider VPN for remote access                    |
+| **Data Classification**      | ✅ Guidelines provided                 | ❌ Classify design documents<br/>❌ Determine appropriate handling                                  |
+| **Logging & Monitoring**     | ✅ Local logs, ⚠️ CloudWatch optional  | ⚠️ Enable CloudWatch logging<br/>⚠️ Monitor for unusual activity                                    |
+| **Incident Response**        | ❌ Not provided                        | ❌ Define incident response procedures<br/>⚠️ Monitor CloudTrail for unauthorized access            |
+| **Compliance**               | ❌ Customer-specific                   | ❌ Perform compliance assessments<br/>❌ Implement additional controls as needed                    |
 
 **Legend**:
+
 - ✅ Implemented in AIDLC Design Reviewer
 - ⚠️ Requires customer configuration
 - ❌ Customer responsibility (not provided by application)
@@ -474,6 +489,7 @@ Before deploying AIDLC Design Reviewer to production, customers should:
    - Document runbook for security incidents
 
 **See Also**:
+
 - [AWS_BEDROCK_SECURITY_GUIDELINES.md](../security/AWS_BEDROCK_SECURITY_GUIDELINES.md) - Detailed security configuration
 - [THREAT_MODEL.md](../security/THREAT_MODEL.md) - Threat analysis and mitigations
 - [RISK_ASSESSMENT.md](../security/RISK_ASSESSMENT.md) - Risk analysis and treatment plan
@@ -484,7 +500,7 @@ Before deploying AIDLC Design Reviewer to production, customers should:
 
 ### Standalone CLI Deployment
 
-```
+```text
 ┌────────────────────────────────────────────┐
 │  Developer Workstation / CI/CD Runner      │
 │                                            │
@@ -535,8 +551,7 @@ Before deploying AIDLC Design Reviewer to production, customers should:
         │  • Amazon Bedrock       │
         │  • CloudWatch           │
         └─────────────────────────┘
-```
-
+```text
 ### Alternative Deployment Options
 
 #### Option 1: Containerized (Docker)
@@ -547,8 +562,7 @@ WORKDIR /app
 COPY . .
 RUN uv sync
 CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
-```
-
+```text
 **Use Case**: CI/CD pipelines, reproducible environments
 
 #### Option 2: AWS Lambda (Serverless)
@@ -556,6 +570,7 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 **Use Case**: On-demand review triggered by events (S3 upload, API Gateway)
 
 **Considerations**:
+
 - Timeout: 15 minutes max (reviews typically < 2 minutes)
 - Memory: 2048 MB recommended
 - Ephemeral storage: /tmp for reports
@@ -565,6 +580,7 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 **Use Case**: Review service API, batch processing
 
 **Architecture**:
+
 - Load balancer → ECS tasks
 - Auto-scaling based on queue depth
 - Persistent storage for reports (S3)
@@ -575,34 +591,34 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 
 ### Runtime
 
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| **Language** | Python | 3.12+ |
-| **Package Manager** | uv | Latest |
-| **Dependency Management** | pyproject.toml | - |
+| Component                   | Technology       | Version   |
+| ----------------------------- | ------------------ | ----------- |
+| **Language**                | Python           | 3.12+     |
+| **Package Manager**         | uv               | Latest    |
+| **Dependency Management**   | pyproject.toml   | -         |
 
 ### Core Dependencies
 
-| Library | Purpose | Version |
-|---------|---------|---------|
-| **boto3** | AWS SDK | Latest |
-| **botocore** | AWS low-level interface | Latest |
-| **pydantic** | Data validation | 2.x |
-| **click** | CLI framework | 8.x |
-| **jinja2** | Template rendering | 3.x |
-| **pyyaml** | YAML parsing | 6.x |
-| **strands** | Amazon Bedrock SDK wrapper | Latest |
-| **backoff** | Retry logic | 2.x |
+| Library        | Purpose                      | Version   |
+| ---------------- | ------------------------------ | ----------- |
+| **boto3**      | AWS SDK                      | Latest    |
+| **botocore**   | AWS low-level interface      | Latest    |
+| **pydantic**   | Data validation              | 2.x       |
+| **click**      | CLI framework                | 8.x       |
+| **jinja2**     | Template rendering           | 3.x       |
+| **pyyaml**     | YAML parsing                 | 6.x       |
+| **strands**    | Amazon Bedrock SDK wrapper   | Latest    |
+| **backoff**    | Retry logic                  | 2.x       |
 
 ### Development Tools
 
-| Tool | Purpose |
-|------|---------|
-| **pytest** | Unit testing |
-| **bandit** | Security scanning |
-| **semgrep** | SAST scanning |
-| **ruff** | Linting |
-| **mypy** | Type checking |
+| Tool          | Purpose             |
+| --------------- | --------------------- |
+| **pytest**    | Unit testing        |
+| **bandit**    | Security scanning   |
+| **semgrep**   | SAST scanning       |
+| **ruff**      | Linting             |
+| **mypy**      | Type checking       |
 
 ---
 
@@ -610,13 +626,13 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 
 ### Performance Characteristics
 
-| Metric | Typical Value | Limit |
-|--------|---------------|-------|
-| **Review Time** | 30-120 seconds | 5 minutes (timeout) |
-| **Concurrent Reviews** | 1 (CLI) | N/A |
-| **Max Document Size** | 50KB | 100KB (truncated) |
-| **Memory Usage** | 200-500 MB | 1 GB |
-| **CPU Usage** | Low (I/O bound) | - |
+| Metric                   | Typical Value     | Limit                 |
+| -------------------------- | ------------------- | ----------------------- |
+| **Review Time**          | 30-120 seconds    | 5 minutes (timeout)   |
+| **Concurrent Reviews**   | 1 (CLI)           | N/A                   |
+| **Max Document Size**    | 50KB              | 100KB (truncated)     |
+| **Memory Usage**         | 200-500 MB        | 1 GB                  |
+| **CPU Usage**            | Low (I/O bound)   | -                     |
 
 ### Bottlenecks
 
@@ -638,12 +654,14 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 ### Metrics
 
 **Application Metrics** (CloudWatch Custom):
+
 - Reviews completed/failed
 - Average review time
 - Cost per review
 - Agent execution times
 
 **AWS Metrics** (Amazon Bedrock):
+
 - Model invocations
 - Token usage (input/output)
 - Error rates (4xx, 5xx)
@@ -652,11 +670,13 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 ### Logging
 
 **Application Logs**: `logs/design-reviewer.log`
+
 - Structured JSON logs
 - Log rotation (10 MB, 5 backups)
 - Credential scrubbing
 
 **CloudWatch Logs**: `/aws/aidlc/design-reviewer`
+
 - Centralized logging (optional)
 - 90-day retention
 - Log Insights queries
@@ -666,6 +686,7 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 **Trace ID**: `rev-YYYYMMDD-HHMMSS-{UUID}`
 
 **Logged at Each Stage**:
+
 - Validation
 - Parsing
 - AI Review (per agent)
@@ -682,6 +703,7 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 **Logs**: CloudWatch retention (90 days)
 
 **Recovery**:
+
 1. Re-clone repository
 2. Restore config.yaml
 3. Re-run review (idempotent)
@@ -691,13 +713,13 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 
 ### Failure Modes
 
-| Failure | Impact | Mitigation |
-|---------|--------|------------|
-| **Amazon Bedrock API outage** | Cannot perform review | Retry logic, fail gracefully |
-| **IAM credential expiration** | Authentication failure | Automatic refresh (STS) |
-| **Config file missing** | Application startup failure | Clear error message |
-| **Invalid design document** | Parsing error | Validation, user feedback |
-| **Out of tokens** | Truncated prompts | Size limits, warnings |
+| Failure                         | Impact                        | Mitigation                     |
+| --------------------------------- | ------------------------------- | -------------------------------- |
+| **Amazon Bedrock API outage**   | Cannot perform review         | Retry logic, fail gracefully   |
+| **IAM credential expiration**   | Authentication failure        | Automatic refresh (STS)        |
+| **Config file missing**         | Application startup failure   | Clear error message            |
+| **Invalid design document**     | Parsing error                 | Validation, user feedback      |
+| **Out of tokens**               | Truncated prompts             | Size limits, warnings          |
 
 ---
 
@@ -729,6 +751,6 @@ CMD ["uv", "run", "design-reviewer", "--project", "/workspace/aidlc-docs"]
 
 ## Change Log
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-03-19 | 1.0 | Initial system architecture documentation |
+| Date         | Version   | Changes                                     |
+| -------------- | ----------- | --------------------------------------------- |
+| 2026-03-19   | 1.0       | Initial system architecture documentation   |

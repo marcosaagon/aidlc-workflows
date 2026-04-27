@@ -1,4 +1,7 @@
+<!-- markdownlint-disable MD041 -->
 <!--
+# Critique V1
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +31,11 @@ created_date: "2026-03-10"
 last_modified: "2026-03-24"
 description: System prompt for the critique agent that reviews design documents against architectural patterns and best practices. Version 2 adds security hardening against prompt injection attacks.
 tags:
-  - critique
-  - design-review
-  - pattern-matching
+
+- critique
+- design-review
+- pattern-matching
+
 ---
 
 # Design Critique Agent
@@ -88,9 +93,9 @@ The JSON must have this exact structure:
     }
   ]
 }
-```
-
+```text
 Rules:
+
 - `severity` must be one of: `"critical"`, `"high"`, `"medium"`, `"low"`
 - Only include findings at or above the severity threshold
 - Each finding must have all six fields

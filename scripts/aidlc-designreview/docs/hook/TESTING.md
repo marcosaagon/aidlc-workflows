@@ -33,8 +33,7 @@ cd /home/ec2-user/gitlab/AIDLC-DesignReview
 # 4. Check outputs:
 ls -la reports/design_review/        # Generated reports
 cat aidlc-docs/audit.md              # Audit trail
-```
-
+```text
 ### Option 2: Test with Arbitrary Docs Folder
 
 Test the hook against any aidlc-docs folder (useful for testing different projects):
@@ -51,11 +50,11 @@ Test the hook against any aidlc-docs folder (useful for testing different projec
 # 4. Check outputs:
 ls -la reports/design_review/                        # Generated reports
 cat test_data/sci-calc/golden-aidlc-docs/audit.md   # Audit log in custom location
-```
-
+```text
 **Note**: When using custom docs, the audit log is written to that folder, not the main project's aidlc-docs.
 
 **What the test script does**:
+
 - Simulates Claude Code invoking the hook
 - Discovers design artifacts in `aidlc-docs/construction/`
 - Uses mock AI responses (no actual API calls)
@@ -73,16 +72,14 @@ Claude Code automatically loads hooks from `.claude/hooks/`. The hook is already
 ```bash
 ls -la .claude/hooks/pre-tool-use
 # Should show: -rwxr-xr-x (executable)
-```
-
+```text
 ### Step 2: Configure the Hook (Optional)
 
 Create a configuration file:
 
 ```bash
 cp .claude/review-config.yaml.example .claude/review-config.yaml
-```
-
+```text
 Edit `.claude/review-config.yaml`:
 
 ```yaml
@@ -96,8 +93,7 @@ dry_run: false
 review_threshold: 3
 
 # Other settings...
-```
-
+```text
 ### Step 3: Test with Claude Code
 
 Open Claude Code in this repository and trigger the hook:
@@ -110,9 +106,9 @@ claude-code
 
 # In Claude Code prompt, try to edit a file:
 # "Please update .claude/lib/config-parser.sh to add a comment"
-```
-
+```text
 **What should happen**:
+
 1. Hook intercepts the Write/Edit tool call
 2. Discovers design artifacts in `aidlc-docs/construction/`
 3. Prompts you: "Review design now? (Y/n)"
@@ -128,8 +124,7 @@ If Claude Code supports it:
 ```bash
 # Test hook directly
 claude-code hooks test pre-tool-use
-```
-
+```text
 ---
 
 ## Configuration Options
@@ -138,16 +133,14 @@ claude-code hooks test pre-tool-use
 
 ```yaml
 enabled: false  # Disable hook completely
-```
-
+```text
 ### Dry Run Mode
 
 Test the hook without blocking:
 
 ```yaml
 dry_run: true   # Always allow code generation, but still log
-```
-
+```text
 ### Environment Variable Override
 
 **Skip Review**:
@@ -158,8 +151,7 @@ Skip review temporarily:
 SKIP_REVIEW=1 ./tool-install/test-hook.sh
 # OR in Claude Code settings:
 # Add "SKIP_REVIEW=1" to environment variables
-```
-
+```text
 **Custom Docs Location**:
 
 Point the hook to a different aidlc-docs folder:
@@ -175,9 +167,9 @@ export AIDLC_DOCS_PATH=/path/to/docs
 # Examples:
 AIDLC_DOCS_PATH=test_data/sci-calc/golden-aidlc-docs ./tool-install/test-hook.sh
 AIDLC_DOCS_PATH=/tmp/test-project/aidlc-docs ./tool-install/test-hook.sh
-```
-
+```text
 **Useful for**:
+
 - Testing against multiple projects without changing directories
 - Automated testing with different doc sets
 - CI/CD pipelines that review docs from various sources
@@ -188,15 +180,14 @@ Enable verbose logging:
 
 ```bash
 DEBUG=1 ./tool-install/test-hook.sh
-```
-
+```text
 ---
 
 ## Expected Outputs
 
 ### 1. Console Output
 
-```
+```text
 [INFO] [2026-03-27T14:30:00Z] AIDLC Design Review Hook - Starting
 [INFO] [2026-03-27T14:30:00Z] Configuration loaded from: yq
 [INFO] [2026-03-27T14:30:01Z] Found 3 unit(s) for potential review: unit2-config-yaml unit3-review-execution unit4-reporting-audit
@@ -227,8 +218,7 @@ DEBUG=1 ./tool-install/test-hook.sh
 > C
 
 [INFO] [2026-03-27T14:30:15Z] User chose to CONTINUE with code generation
-```
-
+```text
 ### 2. Generated Report
 
 Location: `reports/design_review/{timestamp}-designreview.md`
@@ -242,8 +232,7 @@ Location: `reports/design_review/{timestamp}-designreview.md`
 
 ## Executive Summary
 [... findings summary ...]
-```
-
+```text
 ### 3. Audit Trail
 
 Location: `aidlc-docs/audit.md`
@@ -262,8 +251,7 @@ Location: `aidlc-docs/audit.md`
 **Description**: Generated report for unit2-config-yaml with quality score 18
 
 ---
-```
-
+```text
 ---
 
 ## Troubleshooting
@@ -271,27 +259,28 @@ Location: `aidlc-docs/audit.md`
 ### Hook Doesn't Run
 
 **Check 1**: Hook is executable
+
 ```bash
 chmod +x .claude/hooks/pre-tool-use
-```
-
+```text
 **Check 2**: Hook is enabled
+
 ```bash
 cat .claude/review-config.yaml | grep enabled
 # Should show: enabled: true
-```
-
+```text
 **Check 3**: Claude Code recognizes hooks
+
 ```bash
 # In Claude Code CLI
 /help hooks
-```
-
+```text
 ### "Command not found: design-reviewer"
 
 This is **expected**. The hook uses mock responses when the Python CLI is not available.
 
 To use real AI reviews:
+
 1. Install the Python design-reviewer: `uv sync`
 2. Or modify `.claude/hooks/pre-tool-use` to use Claude API directly
 
@@ -303,17 +292,16 @@ To use real AI reviews:
 
 ```yaml
 timeout_seconds: 30  # 30 second timeout
-```
-
+```text
 ### "No artifacts found for review"
 
 **Cause**: No `aidlc-docs/construction/` directory
 
 **Solution**: The hook looks for design artifacts in:
-```
-aidlc-docs/construction/{unit-name}/*.md
-```
 
+```text
+aidlc-docs/construction/{unit-name}/*.md
+```text
 This is expected if you haven't created any design artifacts yet. The hook will skip review.
 
 ---
@@ -334,8 +322,7 @@ To enable the hook in Claude Code settings (`.claude/settings.json`):
     }
   }
 }
-```
-
+```text
 ---
 
 ## Testing Specific Scenarios
@@ -345,8 +332,7 @@ To enable the hook in Claude Code settings (`.claude/settings.json`):
 ```yaml
 # Set high threshold
 review_threshold: 100
-```
-
+```text
 Expected: Hook auto-approves if findings < 100
 
 ### Test 2: Auto-Block (Critical Findings)
@@ -354,16 +340,14 @@ Expected: Hook auto-approves if findings < 100
 ```yaml
 blocking:
   on_critical: true
-```
-
+```text
 Expected: Hook prompts user, recommends BLOCK if critical findings detected
 
 ### Test 3: Dry Run
 
 ```yaml
 dry_run: true
-```
-
+```text
 Expected: Hook runs review but always allows code generation (exit 0)
 
 ### Test 4: Bypass Detection
@@ -371,8 +355,7 @@ Expected: Hook runs review but always allows code generation (exit 0)
 ```bash
 # Delete marker file during review
 rm .claude/.review-in-progress
-```
-
+```text
 Expected: Next review detects bypass, prompts user for confirmation
 
 ---
@@ -392,11 +375,12 @@ Expected: Next review detects bypass, prompts user for confirmation
 To use real AI reviews instead of mocks, modify `.claude/hooks/pre-tool-use`:
 
 Replace this section:
+
 ```bash
 ai_response="CRITICAL: ..."  # Mock response
-```
-
+```text
 With:
+
 ```bash
 # Call Claude API via AWS Bedrock
 ai_response=$(aws bedrock-runtime invoke-model \
@@ -404,18 +388,18 @@ ai_response=$(aws bedrock-runtime invoke-model \
   --body "{\"messages\":[{\"role\":\"user\",\"content\":\"$instructions\"}]}" \
   --output text \
   | jq -r '.content[0].text')
-```
-
+```text
 Or use the existing Python CLI:
+
 ```bash
 ai_response=$(design-reviewer --aidlc-docs "${CWD}/aidlc-docs/construction/${unit_name}")
-```
-
+```text
 ---
 
 ## Support
 
 For issues or questions:
+
 - Check logs in stderr (hook outputs to stderr)
 - Check audit trail: `aidlc-docs/audit.md`
 - Enable debug mode: `DEBUG=1 ./tool-install/test-hook.sh`

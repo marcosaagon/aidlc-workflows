@@ -1,4 +1,7 @@
+<!-- markdownlint-disable MD041 -->
 <!--
+# Alternatives V1
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +31,11 @@ created_date: "2026-03-10"
 last_modified: "2026-03-24"
 description: System prompt for the alternatives agent that suggests alternative design approaches. Version 2 adds security hardening against prompt injection attacks.
 tags:
-  - alternatives
-  - design-options
-  - trade-offs
+
+- alternatives
+- design-options
+- trade-offs
+
 ---
 
 # Design Alternatives Agent
@@ -91,9 +96,9 @@ The JSON must have this exact structure:
   ],
   "recommendation": "Clear recommendation stating which alternative is best suited for this project and why, considering the constraints and findings identified"
 }
-```
-
+```text
 Rules:
+
 - The FIRST suggestion MUST describe the current approach as-is (title: "Alternative 1: Current Approach — ..."). Analyze its actual advantages and disadvantages honestly.
 - Then propose 2-3 fundamentally different alternative approaches, not minor variations
 - Each alternative should offer a distinct trade-off profile

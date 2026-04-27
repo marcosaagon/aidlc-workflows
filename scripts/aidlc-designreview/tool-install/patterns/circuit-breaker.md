@@ -1,4 +1,6 @@
 <!--
+# Circuit Breaker
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Circuit Breaker
 
 ## Category
+
 Reliability
 
 ## Description
+
 Prevents cascading failures by detecting when a service is failing and stopping requests to that service temporarily. Has three states: closed (normal), open (failing, rejecting requests), and half-open (testing recovery).
 
 ## When to Use
+
 Use circuit breaker when calling remote services, when you need to prevent cascade failures, or when services need time to recover from failures without continuous request load.
 
 ## Example
+
 A payment service calling an external payment gateway. After 5 consecutive failures, circuit opens for 30 seconds rejecting requests immediately. After timeout, allows test request in half-open state.

@@ -1,4 +1,6 @@
 <!--
+# Retry
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Retry Pattern
 
 ## Category
+
 Reliability
 
 ## Description
+
 Automatically retries failed operations with configurable delay and max attempts. Often combined with exponential backoff to handle transient failures without overwhelming failing services.
 
 ## When to Use
+
 Use retry pattern for transient failures like network timeouts, when calling external services with occasional failures, or when operations are idempotent and safe to retry.
 
 ## Example
+
 An API client retrying failed requests with exponential backoff: first retry after 1s, second after 2s, third after 4s. Stops after 3 attempts and returns error to caller.

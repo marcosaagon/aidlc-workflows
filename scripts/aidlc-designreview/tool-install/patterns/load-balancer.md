@@ -1,4 +1,6 @@
 <!--
+# Load Balancer
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Load Balancer
 
 ## Category
+
 Scalability
 
 ## Description
+
 Distributes incoming requests across multiple instances of a service to ensure no single instance is overwhelmed. Improves availability, scalability, and fault tolerance by spreading load evenly.
 
 ## When to Use
+
 Use load balancer when running multiple instances of a service, when you need high availability, or when horizontal scaling is required to handle increased traffic.
 
 ## Example
+
 A web application with multiple server instances behind an NGINX load balancer. Incoming HTTP requests are distributed using round-robin or least-connections algorithm across healthy instances.

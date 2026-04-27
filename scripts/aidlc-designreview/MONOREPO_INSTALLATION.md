@@ -21,19 +21,23 @@ All four installer scripts now include intelligent workspace detection:
 The installers walk up the directory tree looking for workspace markers, using a **priority-based approach**:
 
 **High-Priority Markers** (definitive workspace indicators):
+
 - `.git/` directory
 - `aidlc-rules/` directory
 
 **Low-Priority Markers** (fallback):
+
 - `pyproject.toml` file
 
 **Fallback**:
+
 - Parent directory of `tool-install/` (backward compatibility)
 
 ### 3. Why Priority Matters
 
 In a monorepo, the design-reviewer tool itself has a `pyproject.toml` file at:
-```
+
+```text
 scripts/aidlc-designreview/pyproject.toml
 ```
 
@@ -60,11 +64,13 @@ Without prioritization, the installer would incorrectly identify this as the wor
 ## Testing Results
 
 ### Test Environment
+
 - **Workspace**: `/home/ec2-user/github/aidlc-workflows/`
 - **Script Location**: `/home/ec2-user/github/aidlc-workflows/scripts/aidlc-designreview/tool-install/`
 
 ### Test Output
-```
+
+```text
 Script location: /home/ec2-user/github/aidlc-workflows/scripts/aidlc-designreview/tool-install
 Detected workspace: /home/ec2-user/github/aidlc-workflows
 
@@ -109,7 +115,7 @@ cd /path/to/workspace
 
 When running the installer, users will now see:
 
-```
+```text
 ╔════════════════════════════════════════════════════════════════╗
 ║                                                                ║
 ║       AIDLC Design Review Hook - Installation Tool            ║
@@ -152,7 +158,8 @@ When running the installer, users will now see:
 ## Support
 
 For issues with workspace detection:
+
 1. Check that workspace has `.git` or `aidlc-rules` directory
 2. Review installer output for "Detected workspace directory"
 3. Verify the detected path matches your expectation
-4. File issue at https://github.com/awslabs/aidlc-workflows/issues
+4. File issue at <https://github.com/awslabs/aidlc-workflows/issues>

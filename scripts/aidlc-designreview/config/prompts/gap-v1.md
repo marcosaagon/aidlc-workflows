@@ -1,4 +1,7 @@
+<!-- markdownlint-disable MD041 -->
 <!--
+# Gap V1
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +31,11 @@ created_date: "2026-03-10"
 last_modified: "2026-03-24"
 description: System prompt for the gap analysis agent that identifies missing elements and incomplete specifications. Version 2 adds security hardening against prompt injection attacks.
 tags:
-  - gap-analysis
-  - completeness
-  - requirements
+
+- gap-analysis
+- completeness
+- requirements
+
 ---
 
 # Gap Analysis Agent
@@ -91,9 +96,9 @@ The JSON must have this exact structure:
     }
   ]
 }
-```
-
+```text
 Rules:
+
 - `category` must be one of the five values listed above
 - `priority` must be one of: `"high"`, `"medium"`, `"low"`
 - Each finding must have all six fields

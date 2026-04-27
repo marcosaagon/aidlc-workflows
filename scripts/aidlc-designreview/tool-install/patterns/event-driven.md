@@ -1,4 +1,6 @@
 <!--
+# Event Driven
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Event-Driven Architecture
 
 ## Category
+
 System Architecture
 
 ## Description
+
 Components communicate through events rather than direct calls. Producers emit events when state changes occur, and consumers react to events asynchronously. This decouples components and enables scalability.
 
 ## When to Use
+
 Use event-driven architecture for real-time systems, when components need loose coupling, or when building systems that react to state changes across distributed services.
 
 ## Example
+
 An order management system where placing an order emits an event consumed by inventory, shipping, and notification services. Each service processes the event independently without direct coupling.

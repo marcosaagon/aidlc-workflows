@@ -5,6 +5,7 @@
 Convert AIDLC Design Reviewer into a Claude Code hook that automatically blocks code generation when design is incomplete or has critical issues. Uses bash + subagent delegation instead of Python, with optional Python tool for comprehensive reports.
 
 **Approach**: Hybrid architecture
+
 - **Hook**: Real-time gate check (bash + subagent)
 - **Python Tool**: Comprehensive analysis (existing tool, optional)
 
@@ -12,7 +13,7 @@ Convert AIDLC Design Reviewer into a Claude Code hook that automatically blocks 
 
 ## Architecture Overview
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────┐
 │                    AIDLC Workflow (CLAUDE.md)                  │
 └────────────────────────────────────────────────────────────────┘
@@ -68,8 +69,7 @@ Convert AIDLC Design Reviewer into a Claude Code hook that automatically blocks 
 ┌─────────────────────────────────────────────────────────────────┐
 │           Code Generation Proceeds (2nd attempt allowed)        │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```text
 ---
 
 ## Phase 1: Core Hook Infrastructure (Week 1)
@@ -79,18 +79,20 @@ Convert AIDLC Design Reviewer into a Claude Code hook that automatically blocks 
 **Deliverable**: Bash functions to parse `aidlc-state.md` and detect workflow state
 
 **Files**:
+
 - `.claude/hooks/lib/state-detector.sh`
 
 **Functions**:
+
 ```bash
 get_current_stage()           # Returns: "INCEPTION" | "CONSTRUCTION" | "OPERATIONS"
 is_design_complete()          # Returns: 0 (true) | 1 (false)
 get_completed_units()         # Returns: array of unit names
 is_in_code_generation_stage() # Returns: 0 (true) | 1 (false)
 get_active_unit()             # Returns: current unit being worked on
-```
-
+```text
 **Implementation Details**:
+
 ```bash
 # Example: Check if Functional Design complete for current unit
 is_design_complete() {
@@ -108,9 +110,9 @@ is_design_complete() {
     [[ $functional -gt 0 && $nfr_req -gt 0 && $nfr_design -gt 0 ]] && return 0
     return 1
 }
-```
-
+```text
 **Testing**:
+
 - Unit tests with sample `aidlc-state.md` files
 - Test cases: greenfield, brownfield, mid-construction, all stages complete
 
@@ -121,9 +123,11 @@ is_design_complete() {
 **Deliverable**: Main hook script that intercepts Write/Edit operations
 
 **Files**:
+
 - `.claude/hooks/review-before-code-generation.sh`
 
 **Logic Flow**:
+
 ```bash
 1. Parse JSON input (tool_name, file_path, session_id)
 2. Filter: Only intercept Write/Edit to src/ or tests/
@@ -135,9 +139,9 @@ is_design_complete() {
    - If true → Continue to step 5
 5. Create marker file
 6. Return DENY permission with subagent instructions
-```
-
+```text
 **Integration Point**:
+
 ```json
 {
   "hooks": {
@@ -155,9 +159,9 @@ is_design_complete() {
     ]
   }
 }
-```
-
+```text
 **Testing**:
+
 - Mock Write/Edit tool calls
 - Verify marker file creation/deletion
 - Test 2-attempt pattern
@@ -169,9 +173,11 @@ is_design_complete() {
 **Deliverable**: Marker file system for 2-attempt blocking pattern
 
 **Files**:
+
 - Same as 1.2 (embedded in main hook)
 
 **Pattern**:
+
 ```bash
 MARKER_FILE="/tmp/aidlc-design-reviewed-${SESSION_ID}"
 
@@ -186,9 +192,9 @@ if [ -f "$MARKER_FILE" ]; then
     rm "$MARKER_FILE"
     exit 0  # Allow code generation
 fi
-```
-
+```text
 **Edge Cases**:
+
 - Multiple files written in same session (marker persists until review complete)
 - Session timeout/restart (marker in /tmp, cleaned on reboot)
 - Manual override (user can delete marker file to skip review)
@@ -202,16 +208,18 @@ fi
 **Deliverable**: Functions to find and categorize design artifacts
 
 **Files**:
+
 - `.claude/hooks/lib/artifact-aggregator.sh`
 
 **Functions**:
+
 ```bash
 find_design_artifacts()       # Returns: array of file paths
 get_current_unit_artifacts()  # Returns: files for active unit only
 aggregate_design_content()    # Returns: concatenated markdown content
-```
-
+```text
 **Implementation**:
+
 ```bash
 aggregate_design_content() {
     local unit_name="$1"
@@ -232,9 +240,9 @@ aggregate_design_content() {
         cat aidlc-docs/inception/application-design/*.md 2>/dev/null
     } | head -c 100000  # Limit to ~100KB to avoid token limits
 }
-```
-
+```text
 **Content Limits**:
+
 - Max 100KB total content (prevent token overflow)
 - Truncate with warning if exceeded
 - Prioritize: Functional Design > NFR Design > NFR Requirements
@@ -246,6 +254,7 @@ aggregate_design_content() {
 **Deliverable**: Format aggregated content with security delimiters
 
 **Implementation**:
+
 ```bash
 format_for_subagent() {
     local content="$1"
@@ -262,8 +271,7 @@ $content
 Analyze the design artifacts above according to the review criteria.
 EOF
 }
-```
-
+```text
 ---
 
 ## Phase 3: Subagent Review Instructions (Week 2)
@@ -273,9 +281,11 @@ EOF
 **Deliverable**: Structured prompt template for subagent
 
 **Files**:
+
 - `.claude/hooks/prompts/design-review-prompt.md`
 
 **Structure**:
+
 ```markdown
 # Design Review Agent Instructions
 
@@ -346,8 +356,7 @@ For each finding:
    - BLOCK if: 3+ HIGH findings
    - BLOCK if: Quality score > 30
    - ALLOW otherwise
-```
-
+```text
 ---
 
 ### 3.2 Prompt Builder Function
@@ -355,9 +364,11 @@ For each finding:
 **Deliverable**: Function to combine prompt template with design content
 
 **Files**:
+
 - `.claude/hooks/lib/prompt-builder.sh`
 
 **Function**:
+
 ```bash
 build_review_prompt() {
     local design_content="$1"
@@ -377,8 +388,7 @@ $(format_for_subagent "$design_content")
 **Perform the design review now and provide your findings.**
 EOF
 }
-```
-
+```text
 ---
 
 ## Phase 4: Configuration System (Week 2)
@@ -388,9 +398,11 @@ EOF
 **Deliverable**: YAML config for review behavior
 
 **Files**:
+
 - `.claude/review-config.yaml`
 
 **Schema**:
+
 ```yaml
 review:
   # Enable/disable review hook
@@ -431,8 +443,7 @@ review:
   limits:
     max_content_size_kb: 100
     max_files: 50
-```
-
+```text
 ---
 
 ### 4.2 Config Parser
@@ -440,6 +451,7 @@ review:
 **Deliverable**: Bash functions to parse YAML config
 
 **Files**:
+
 - `.claude/hooks/lib/config-parser.sh`
 
 **Approach**: Use `yq` (requires installation)
@@ -477,9 +489,9 @@ use_default_config() {
     MEDIUM_WEIGHT=2
     LOW_WEIGHT=1
 }
-```
-
+```text
 **Fallback Strategy**:
+
 - If `yq` not installed → Use defaults + warn user
 - If config file missing → Use defaults silently
 - If config malformed → Use defaults + error message
@@ -491,9 +503,11 @@ use_default_config() {
 **Deliverable**: Functions to determine block/allow based on config
 
 **Files**:
+
 - `.claude/hooks/lib/blocking-logic.sh`
 
 **Functions**:
+
 ```bash
 calculate_quality_score() {
     local critical=$1 high=$2 medium=$3 low=$4
@@ -546,8 +560,7 @@ get_quality_label() {
         echo "Poor"
     fi
 }
-```
-
+```text
 ---
 
 ## Phase 5: Subagent Integration (Week 3)
@@ -561,9 +574,11 @@ get_quality_label() {
 **Approach**: Use regex to extract severity counts
 
 **Files**:
+
 - `.claude/hooks/lib/response-parser.sh`
 
 **Implementation**:
+
 ```bash
 parse_subagent_response() {
     local response="$1"
@@ -583,8 +598,7 @@ parse_subagent_response() {
     # Export for use in main script
     export CRITICAL_COUNT HIGH_COUNT MEDIUM_COUNT LOW_COUNT QUALITY_SCORE VERDICT
 }
-```
-
+```text
 ---
 
 ### 5.2 JSON Output Builder
@@ -592,9 +606,11 @@ parse_subagent_response() {
 **Deliverable**: Build JSON response for PreToolUse hook
 
 **Files**:
+
 - `.claude/hooks/lib/json-builder.sh`
 
 **Function**:
+
 ```bash
 build_deny_response() {
     local critical=$1
@@ -622,8 +638,7 @@ build_deny_response() {
             }
         }'
 }
-```
-
+```text
 ---
 
 ### 5.3 Subagent Invocation Instructions
@@ -633,6 +648,7 @@ build_deny_response() {
 **Note**: Hook CANNOT directly spawn subagent (that's Claude's job), but hook can instruct Claude to do so
 
 **Implementation**:
+
 ```bash
 generate_subagent_instructions() {
     local review_prompt="$1"
@@ -668,8 +684,7 @@ $review_prompt
 Design review catches issues early when they're cheap to fix, before code is generated.
 EOF
 }
-```
-
+```text
 **Integration**: Hook returns this in `permissionDecisionReason` field
 
 ---
@@ -681,9 +696,11 @@ EOF
 **Deliverable**: Log all review activities to `aidlc-docs/audit.md`
 
 **Files**:
+
 - `.claude/hooks/lib/audit-logger.sh`
 
 **Functions**:
+
 ```bash
 log_review_initiated() {
     local unit_name="$1"
@@ -723,9 +740,9 @@ log_review_result() {
 ---
 EOF
 }
-```
-
+```text
 **When to Log**:
+
 - Hook triggers (first attempt)
 - Subagent review complete (verdict received)
 - User proceeds with code generation (second attempt)
@@ -737,6 +754,7 @@ EOF
 **Deliverable**: Update `aidlc-state.md` with review status
 
 **Implementation**:
+
 ```bash
 update_state_with_review_status() {
     local unit_name="$1"
@@ -746,9 +764,9 @@ update_state_with_review_status() {
     sed -i "/\[x\] Code Generation - COMPLETE/i \\
   - [x] Design Review - $status" aidlc-docs/aidlc-state.md
 }
-```
-
+```text
 **Example State File After Review**:
+
 ```markdown
 #### Unit 1: Foundation & Configuration
 - [x] Functional Design - COMPLETE
@@ -756,8 +774,7 @@ update_state_with_review_status() {
 - [x] NFR Design - COMPLETE
 - [x] Design Review - PASSED (Score: 12, Quality: Good)
 - [x] Code Generation - COMPLETE
-```
-
+```text
 ---
 
 ## Phase 7: Testing & Validation (Week 4)
@@ -765,6 +782,7 @@ update_state_with_review_status() {
 ### 7.1 Unit Tests
 
 **Test Files**:
+
 - `tests/hooks/test-state-detector.sh`
 - `tests/hooks/test-artifact-aggregator.sh`
 - `tests/hooks/test-config-parser.sh`
@@ -773,6 +791,7 @@ update_state_with_review_status() {
 **Test Framework**: Use `bats` (Bash Automated Testing System)
 
 **Example Test**:
+
 ```bash
 #!/usr/bin/env bats
 
@@ -800,13 +819,13 @@ EOF
 
     [ "$score" -eq 17 ]  # 1×4 + 2×3 + 3×2 + 1×1 = 17
 }
-```
-
+```text
 ---
 
 ### 7.2 Integration Tests
 
 **Test Scenarios**:
+
 1. **Full Review Flow**: Trigger hook → Aggregate content → Parse response → Block code generation
 2. **2-Attempt Pattern**: First attempt blocked, second attempt allowed
 3. **Config Override**: Custom thresholds change blocking behavior
@@ -814,6 +833,7 @@ EOF
 5. **Session Isolation**: Multiple sessions don't interfere
 
 **Test Environment**:
+
 ```bash
 # Setup
 export SESSION_ID="test-session-123"
@@ -822,8 +842,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 
 # Run integration test
 ./tests/hooks/integration-test.sh
-```
-
+```text
 ---
 
 ### 7.3 End-to-End Test
@@ -831,6 +850,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 **Scenario**: Simulate complete AIDLC workflow with hook enabled
 
 **Steps**:
+
 1. Create sample project with complete design artifacts
 2. Configure hook in `.claude/settings.json`
 3. Trigger Write operation to `src/main.py`
@@ -840,6 +860,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 7. Verify hook allows
 
 **Success Criteria**:
+
 - Hook intercepts first write attempt
 - Subagent instructions displayed
 - Second attempt allowed after marker file created
@@ -854,6 +875,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 **File**: `docs/DESIGN_REVIEW_HOOK.md`
 
 **Contents**:
+
 - What the hook does
 - How to enable/disable
 - Configuration options
@@ -867,6 +889,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 **File**: `docs/HOOK_DEVELOPMENT.md`
 
 **Contents**:
+
 - Architecture overview
 - File organization
 - How to modify review criteria
@@ -880,6 +903,7 @@ mkdir -p /tmp/test-project/aidlc-docs/construction/unit1-foundation
 **File**: `docs/HOOK_CONFIG_REFERENCE.md`
 
 **Contents**:
+
 - Complete config schema
 - All configurable options
 - Default values
@@ -954,8 +978,7 @@ echo "Next steps:"
 echo "1. Review configuration: .claude/review-config.yaml"
 echo "2. Adjust thresholds if needed"
 echo "3. Run: design-reviewer --help for usage"
-```
-
+```text
 ---
 
 ### 9.2 Claude Code Settings Integration
@@ -984,8 +1007,7 @@ echo "3. Run: design-reviewer --help for usage"
     "AIDLC_DESIGN_REVIEW_ENABLED": "1"
   }
 }
-```
-
+```text
 ---
 
 ### 9.3 Backward Compatibility
@@ -993,14 +1015,17 @@ echo "3. Run: design-reviewer --help for usage"
 **Strategy**: Hook is opt-in, doesn't break existing workflows
 
 **If Hook Not Installed**:
+
 - AIDLC workflow proceeds normally
 - Python tool still available for manual reviews
 
 **If Hook Installed but Disabled**:
+
 - Set `AIDLC_DESIGN_REVIEW_ENABLED=0` in settings.json
 - Hook checks env var and exits early
 
 **If Hook Installed and Enabled**:
+
 - Automatic review before code generation
 - Can still use Python tool for comprehensive reports
 
@@ -1011,6 +1036,7 @@ echo "3. Run: design-reviewer --help for usage"
 ### 10.1 Hook + Python Tool Workflow
 
 **Use Case 1: Hook as Gate Check**
+
 ```bash
 # Hook blocks code generation automatically
 # User sees: "Design review required"
@@ -1019,9 +1045,9 @@ design-reviewer --aidlc-docs ./aidlc-docs --output ./review.html
 
 # User reviews HTML report, fixes issues
 # User re-runs code generation (hook allows second attempt)
-```
-
+```text
 **Use Case 2: Python Tool First, Hook Second**
+
 ```bash
 # User runs Python tool proactively
 design-reviewer --aidlc-docs ./aidlc-docs
@@ -1029,8 +1055,7 @@ design-reviewer --aidlc-docs ./aidlc-docs
 # Reviews report, makes fixes
 # Hook still runs before code generation (defense-in-depth)
 # Hook sees no critical issues, allows immediately
-```
-
+```text
 ---
 
 ### 10.2 Report Sharing Between Hook and Python Tool
@@ -1040,6 +1065,7 @@ design-reviewer --aidlc-docs ./aidlc-docs
 **Solution**: Unified report format
 
 **Implementation**:
+
 ```bash
 # Hook saves subagent output
 mkdir -p .aidlc-review-cache
@@ -1049,8 +1075,7 @@ echo "$SUBAGENT_RESPONSE" > .aidlc-review-cache/last-review.md
 if [ -f .aidlc-review-cache/last-review.md ]; then
     echo "Using cached review from hook..."
 fi
-```
-
+```text
 **Benefit**: Avoid duplicate reviews (hook + tool see same data)
 
 ---
@@ -1060,6 +1085,7 @@ fi
 **Single Config File**: `.claude/review-config.yaml`
 
 **Used By**:
+
 - Hook (via bash + yq)
 - Python tool (via PyYAML)
 
@@ -1069,7 +1095,7 @@ fi
 
 ## File Structure
 
-```
+```text
 .claude/
 ├── settings.json                       # Hook configuration
 ├── review-config.yaml                  # Shared config (hook + tool)
@@ -1103,24 +1129,26 @@ scripts/
 
 .aidlc-review-cache/
 └── last-review.md                      # Cached subagent output
-```
-
+```text
 ---
 
 ## Dependencies
 
-### Required:
+### Required
+
 - **bash** 4.0+ (for arrays, modern string handling)
 - **jq** (JSON parsing for hook input/output)
 - **Claude Code** (hook infrastructure)
 
-### Optional:
+### Optional
+
 - **yq** (YAML parsing, recommended for config)
   - Fallback: Python one-liner
   - Fallback: grep/sed (fragile)
 - **bats** (testing framework for bash)
 
-### No Python Required:
+### No Python Required
+
 - Hook implemented entirely in bash
 - Python tool optional for comprehensive reports
 
@@ -1128,19 +1156,22 @@ scripts/
 
 ## Success Metrics
 
-### Functional Requirements:
+### Functional Requirements
+
 - ✅ Hook blocks code generation when design incomplete
 - ✅ Hook allows code generation after review complete
 - ✅ Configurable thresholds work correctly
 - ✅ Subagent review provides actionable findings
 - ✅ 2-attempt pattern prevents infinite blocking
 
-### Performance Requirements:
+### Performance Requirements
+
 - Hook adds < 2 seconds overhead (state detection + config parsing)
 - Subagent review completes in < 30 seconds (typical)
 - No impact on non-AIDLC projects
 
-### Usability Requirements:
+### Usability Requirements
+
 - Users understand why code generation blocked
 - Clear instructions for resolving issues
 - Easy to disable hook if needed
@@ -1150,30 +1181,30 @@ scripts/
 
 ## Risks & Mitigations
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| **Subagent produces unparseable output** | Hook can't extract severity counts | Regex patterns handle variations; fallback to "allow" on parse failure |
-| **yq not installed** | Config parsing fails | Fallback to hardcoded defaults with warning |
-| **Token limit exceeded** | Subagent review fails | Truncate aggregated content to 100KB; prioritize functional design |
-| **False positives** | Hook blocks unnecessarily | User can delete marker file to override; config thresholds adjustable |
-| **Performance impact** | Hook slows down workflow | Cache design content; skip aggregation on second attempt |
+| Risk                                       | Impact                               | Mitigation                                                               |
+| -------------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------- |
+| **Subagent produces unparseable output**   | Hook can't extract severity counts   | Regex patterns handle variations; fallback to "allow" on parse failure   |
+| **yq not installed**                       | Config parsing fails                 | Fallback to hardcoded defaults with warning                              |
+| **Token limit exceeded**                   | Subagent review fails                | Truncate aggregated content to 100KB; prioritize functional design       |
+| **False positives**                        | Hook blocks unnecessarily            | User can delete marker file to override; config thresholds adjustable    |
+| **Performance impact**                     | Hook slows down workflow             | Cache design content; skip aggregation on second attempt                 |
 
 ---
 
 ## Timeline Summary
 
-| Phase | Duration | Key Deliverables |
-|-------|----------|------------------|
-| 1. Core Hook Infrastructure | Week 1 | State detection, trigger logic, session management |
-| 2. Artifact Aggregation | Week 1 | Discover, aggregate, format design content |
-| 3. Subagent Instructions | Week 2 | Review criteria prompt, prompt builder |
-| 4. Configuration System | Week 2 | YAML config, parser, blocking logic |
-| 5. Subagent Integration | Week 3 | Response parser, JSON builder |
-| 6. Audit Trail | Week 3 | Logging, state updates |
-| 7. Testing | Week 4 | Unit tests, integration tests, E2E test |
-| 8. Documentation | Week 4 | User guide, dev guide, config reference |
-| 9. Deployment | Week 5 | Installation script, settings integration |
-| 10. Hybrid Integration | Week 5 | Hook + Python tool workflow |
+| Phase                         | Duration   | Key Deliverables                                     |
+| ------------------------------- | ------------ | ------------------------------------------------------ |
+| 1. Core Hook Infrastructure   | Week 1     | State detection, trigger logic, session management   |
+| 2. Artifact Aggregation       | Week 1     | Discover, aggregate, format design content           |
+| 3. Subagent Instructions      | Week 2     | Review criteria prompt, prompt builder               |
+| 4. Configuration System       | Week 2     | YAML config, parser, blocking logic                  |
+| 5. Subagent Integration       | Week 3     | Response parser, JSON builder                        |
+| 6. Audit Trail                | Week 3     | Logging, state updates                               |
+| 7. Testing                    | Week 4     | Unit tests, integration tests, E2E test              |
+| 8. Documentation              | Week 4     | User guide, dev guide, config reference              |
+| 9. Deployment                 | Week 5     | Installation script, settings integration            |
+| 10. Hybrid Integration        | Week 5     | Hook + Python tool workflow                          |
 
 **Total**: 5 weeks for complete implementation
 
@@ -1204,13 +1235,14 @@ scripts/
 ### Scenario: User Attempts Code Generation After Design Complete
 
 **Step 1: Hook Triggers**
-```
+
+```text
 User: "Generate the foundation module code"
 Claude: Attempting Write to src/design_reviewer/foundation/config.py
 Hook: PreToolUse intercepted
-```
-
+```text
 **Step 2: Hook Checks State**
+
 ```bash
 $ is_design_complete
 # Returns: true (all checkboxes marked in aidlc-state.md)
@@ -1220,21 +1252,21 @@ $ is_in_code_generation_stage
 
 $ check_marker_file
 # Returns: false (first attempt)
-```
-
+```text
 **Step 3: Hook Aggregates Content**
+
 ```bash
 $ aggregate_design_content "unit1-foundation"
 # Returns: ~80KB of design markdown from aidlc-docs/construction/unit1-foundation/
-```
-
+```text
 **Step 4: Hook Builds Prompt**
+
 ```bash
 $ build_review_prompt "$design_content"
 # Returns: 10KB prompt with review criteria + design artifacts
-```
-
+```text
 **Step 5: Hook Returns DENY**
+
 ```json
 {
   "hookSpecificOutput": {
@@ -1243,45 +1275,44 @@ $ build_review_prompt "$design_content"
     "permissionDecisionReason": "⚠️ Design review required before code generation.\n\n[Subagent instructions...]"
   }
 }
-```
-
+```text
 **Step 6: User Sees Blocking Message**
-```
+
+```text
 ⚠️ Design Review Required Before Code Generation
 
 Spawning design review subagent to analyze completed design artifacts.
 
 [Subagent instructions displayed to Claude]
-```
-
+```text
 **Step 7: Claude Spawns Subagent**
-```
+
+```text
 Claude: Using Agent tool with subagent_type="general-purpose"
 Subagent: [Analyzes design artifacts]
 Subagent: **Verdict**: BLOCK - 2 CRITICAL findings, 3 HIGH findings
-```
-
+```text
 **Step 8: User Reviews Findings, Fixes Design**
-```
+
+```text
 User: Updates aidlc-docs/construction/unit1-foundation/functional-design/business-logic-model.md
 User: "Okay, I've fixed the issues. Generate the code now."
-```
-
+```text
 **Step 9: Second Attempt**
-```
+
+```text
 Claude: Attempting Write to src/design_reviewer/foundation/config.py
 Hook: PreToolUse intercepted
 Hook: Marker file exists (second attempt)
 Hook: Removing marker, allowing code generation
 Hook: exit 0
-```
-
+```text
 **Step 10: Code Generation Proceeds**
-```
+
+```text
 Claude: Writing src/design_reviewer/foundation/config.py
 [Code generation completes successfully]
-```
-
+```text
 ---
 
 ## Conclusion

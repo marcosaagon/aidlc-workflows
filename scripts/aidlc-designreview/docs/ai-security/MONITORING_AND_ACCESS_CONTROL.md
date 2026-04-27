@@ -1,4 +1,5 @@
-<!--
+<!-- markdownlint-disable MD041 MD060 -->
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,16 +41,17 @@ This document describes monitoring, access control, and audit logging for Amazon
 
 ### Responsibility Summary for Monitoring and Access Control
 
-| Security Area | AWS Responsibility | Customer Responsibility (AIDLC Users) |
-|--------------|-------------------|--------------------------------------|
-| **IAM Service** | Operate IAM service infrastructure, policy enforcement engine | ✅ Define and maintain IAM policies<br/>✅ Assign roles and permissions<br/>⚠️ Enable MFA for console access<br/>⚠️ Rotate credentials regularly |
-| **CloudWatch Service** | Operate CloudWatch infrastructure, log storage, metrics collection | ⚠️ Configure CloudWatch log groups<br/>⚠️ Define log retention policies<br/>⚠️ Create alarms and dashboards<br/>⚠️ Monitor and respond to alerts |
-| **CloudTrail Service** | Operate CloudTrail infrastructure, API logging | ⚠️ Enable CloudTrail trails<br/>⚠️ Configure S3 bucket for log storage<br/>⚠️ Enable log file validation<br/>⚠️ Review and analyze audit logs |
-| **Amazon Bedrock API** | API availability, authentication, rate limiting | ✅ Call API with valid credentials<br/>✅ Handle rate limit errors gracefully<br/>⚠️ Monitor for unauthorized usage |
-| **Application Logging** | N/A (customer application) | ✅ Implement application-level logging<br/>✅ Scrub credentials from logs<br/>✅ Secure log file permissions |
-| **Incident Response** | Respond to AWS infrastructure incidents | ❌ Define incident response procedures<br/>⚠️ Monitor for suspicious activity<br/>⚠️ Investigate and remediate issues |
+| Security Area             | AWS Responsibility                                                   | Customer Responsibility (AIDLC Users)                                                                                                               |
+| --------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **IAM Service**           | Operate IAM service infrastructure, policy enforcement engine        | ✅ Define and maintain IAM policies<br/>✅ Assign roles and permissions<br/>⚠️ Enable MFA for console access<br/>⚠️ Rotate credentials regularly    |
+| **CloudWatch Service**    | Operate CloudWatch infrastructure, log storage, metrics collection   | ⚠️ Configure CloudWatch log groups<br/>⚠️ Define log retention policies<br/>⚠️ Create alarms and dashboards<br/>⚠️ Monitor and respond to alerts    |
+| **CloudTrail Service**    | Operate CloudTrail infrastructure, API logging                       | ⚠️ Enable CloudTrail trails<br/>⚠️ Configure S3 bucket for log storage<br/>⚠️ Enable log file validation<br/>⚠️ Review and analyze audit logs       |
+| **Amazon Bedrock API**    | API availability, authentication, rate limiting                      | ✅ Call API with valid credentials<br/>✅ Handle rate limit errors gracefully<br/>⚠️ Monitor for unauthorized usage                                 |
+| **Application Logging**   | N/A (customer application)                                           | ✅ Implement application-level logging<br/>✅ Scrub credentials from logs<br/>✅ Secure log file permissions                                        |
+| **Incident Response**     | Respond to AWS infrastructure incidents                              | ❌ Define incident response procedures<br/>⚠️ Monitor for suspicious activity<br/>⚠️ Investigate and remediate issues                               |
 
 **Legend**:
+
 - ✅ Implemented in AIDLC Design Reviewer application
 - ⚠️ Requires customer configuration/action
 - ❌ Customer responsibility (not implemented by application)
@@ -71,6 +73,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **Role Name**: `aidlc-design-reviewer-app-role`
 
 **IAM Policy**:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -113,9 +116,9 @@ This document describes monitoring, access control, and audit logging for Amazon
     }
   ]
 }
-```
-
+```text
 **Assigned To**:
+
 - EC2 instance profile (if running on EC2)
 - ECS task role (if running in containers)
 - Lambda execution role (if serverless)
@@ -126,6 +129,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **Role Name**: `aidlc-bedrock-admin-role`
 
 **Additional Permissions**:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -155,12 +159,13 @@ This document describes monitoring, access control, and audit logging for Amazon
     }
   ]
 }
-```
-
+```text
 **⚠️ IMPORTANT - Replace Placeholders**:
+
 - `ACCOUNT_ID`: Your AWS account ID (e.g., `123456789012`)
 
 **Least Privilege Notes**:
+
 - Guardrail ARN pattern: `arn:aws:bedrock:REGION:ACCOUNT_ID:guardrail/GUARDRAIL_ID`
 - Use specific guardrail IDs when possible: `arn:aws:bedrock:*:ACCOUNT_ID:guardrail/abc123`
 - **ListGuardrails**: Requires wildcard resource (`"Resource": "*"`) per AWS API requirements, BUT is scoped to specific regions (`us-east-1`, `us-west-2`) using `aws:RequestedRegion` condition
@@ -169,6 +174,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **See Also**: [AWS IAM Best Practices - Grant Least Privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege)
 
 **Assigned To**:
+
 - Security team
 - DevOps engineers
 - Compliance auditors (read-only subset)
@@ -178,6 +184,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **Role Name**: `aidlc-bedrock-auditor-role`
 
 **IAM Policy**:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -232,12 +239,13 @@ This document describes monitoring, access control, and audit logging for Amazon
     }
   ]
 }
-```
-
+```text
 **⚠️ IMPORTANT - Replace Placeholders**:
+
 - `ACCOUNT_ID`: Your AWS account ID (e.g., `123456789012`)
 
 **Least Privilege Notes**:
+
 - **CloudWatch Logs**: Scoped to Amazon Bedrock and AIDLC log groups using ARN patterns
 - **CloudWatch Metrics**: Scoped to Amazon Bedrock namespace via condition key
 - **ListGuardrails**: Requires wildcard resource (`"Resource": "*"`) per AWS API requirements, BUT is scoped to specific regions using `aws:RequestedRegion` condition to prevent cross-region listing
@@ -246,6 +254,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **See Also**: [AWS IAM Best Practices - Grant Least Privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege)
 
 **Assigned To**:
+
 - Compliance team
 - Security auditors
 - Management (for dashboards)
@@ -259,6 +268,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **Restriction**: Application can only invoke approved Claude models
 
 **Implementation**:
+
 - IAM policy lists specific model ARNs (no wildcards)
 - Cross-region inference models specified explicitly
 - Prevents unauthorized model usage
@@ -270,6 +280,7 @@ This document describes monitoring, access control, and audit logging for Amazon
 **Enforcement**: `aws:RequestedRegion` condition in IAM policy
 
 **Allowed Regions**:
+
 - `us-east-1` (primary)
 
 **Benefit**: Data residency compliance and cost control
@@ -286,16 +297,17 @@ This document describes monitoring, access control, and audit logging for Amazon
 
 **Metrics Tracked**:
 
-| Metric | Description | Alarm Threshold |
-|--------|-------------|-----------------|
-| `Invocations` | Total model invocations | N/A (informational) |
-| `InvocationLatency` | Time to process requests | > 30 seconds |
-| `InvocationClientErrors` | 4xx errors | > 10/minute |
-| `InvocationServerErrors` | 5xx errors | > 1/minute |
-| `InputTokens` | Tokens sent to model | > 1M/hour (cost alert) |
-| `OutputTokens` | Tokens generated | > 500K/hour (cost alert) |
+| Metric                     | Description                | Alarm Threshold            |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| `Invocations`              | Total model invocations    | N/A (informational)        |
+| `InvocationLatency`        | Time to process requests   | > 30 seconds               |
+| `InvocationClientErrors`   | 4xx errors                 | > 10/minute                |
+| `InvocationServerErrors`   | 5xx errors                 | > 1/minute                 |
+| `InputTokens`              | Tokens sent to model       | > 1M/hour (cost alert)     |
+| `OutputTokens`             | Tokens generated           | > 500K/hour (cost alert)   |
 
 **Dimensions**:
+
 - `ModelId` (per model tracking)
 - `Region` (us-east-1)
 
@@ -305,15 +317,16 @@ This document describes monitoring, access control, and audit logging for Amazon
 
 **Custom Metrics**:
 
-| Metric | Unit | Description |
-|--------|------|-------------|
-| `ReviewsCompleted` | Count | Successful design reviews |
-| `ReviewsFailed` | Count | Failed reviews (errors) |
-| `AverageCostPerReview` | USD | Cost per review session |
-| `GuardrailBlocks` | Count | Requests blocked by guardrails |
-| `AgentExecutionTime` | Seconds | Per-agent execution time |
+| Metric                   | Unit      | Description                      |
+| -------------------------- | ----------- | ---------------------------------- |
+| `ReviewsCompleted`       | Count     | Successful design reviews        |
+| `ReviewsFailed`          | Count     | Failed reviews (errors)          |
+| `AverageCostPerReview`   | USD       | Cost per review session          |
+| `GuardrailBlocks`        | Count     | Requests blocked by guardrails   |
+| `AgentExecutionTime`     | Seconds   | Per-agent execution time         |
 
 **Publishing**:
+
 ```python
 import boto3
 
@@ -332,13 +345,13 @@ cloudwatch.put_metric_data(
         }
     ]
 )
-```
-
+```text
 ### CloudWatch Alarms
 
 #### Critical Alarms
 
 **High Error Rate**:
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name "AIDLC-Bedrock-High-Error-Rate" \
@@ -351,9 +364,9 @@ aws cloudwatch put-metric-alarm \
   --threshold 10 \
   --comparison-operator GreaterThanThreshold \
   --alarm-actions arn:aws:sns:us-east-1:ACCOUNT-ID:aidlc-alerts
-```
-
+```text
 **High Cost**:
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name "AIDLC-Bedrock-High-Cost" \
@@ -365,9 +378,9 @@ aws cloudwatch put-metric-alarm \
   --threshold 3000000 \
   --comparison-operator GreaterThanThreshold \
   --alarm-actions arn:aws:sns:us-east-1:ACCOUNT-ID:aidlc-alerts
-```
-
+```text
 **Guardrail Blocks Spike**:
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name "AIDLC-Guardrail-Blocks-Spike" \
@@ -379,8 +392,7 @@ aws cloudwatch put-metric-alarm \
   --threshold 20 \
   --comparison-operator GreaterThanThreshold \
   --alarm-actions arn:aws:sns:us-east-1:ACCOUNT-ID:aidlc-alerts
-```
-
+```text
 ### CloudWatch Logs
 
 #### Application Logs
@@ -388,6 +400,7 @@ aws cloudwatch put-metric-alarm \
 **Log Group**: `/aws/aidlc/design-reviewer`
 
 **Log Structure**:
+
 ```json
 {
   "timestamp": "2026-03-19T15:30:45.123Z",
@@ -400,38 +413,38 @@ aws cloudwatch put-metric-alarm \
   "review_id": "rev-20260319-153045",
   "cost_usd": 0.25
 }
-```
-
+```text
 **Retention**: 90 days (configurable)
 
 **Log Insights Queries**:
 
 **Query 1 - Average Cost Per Review**:
+
 ```sql
 fields @timestamp, cost_usd
 | stats avg(cost_usd) as avg_cost, sum(cost_usd) as total_cost, count(*) as reviews
 | sort @timestamp desc
-```
-
+```text
 **Query 2 - Model Usage Distribution**:
+
 ```sql
 fields model_id
 | stats count(*) as invocations by model_id
 | sort invocations desc
-```
-
+```text
 **Query 3 - Slow Reviews (>30s)**:
+
 ```sql
 fields @timestamp, agent_name, review_id, execution_time
 | filter execution_time > 30
 | sort execution_time desc
-```
-
+```text
 #### Amazon Bedrock Logs (Guardrail)
 
 **Log Group**: `/aws/bedrock/guardrails/aidlc-design-reviewer`
 
 **Logged Events**:
+
 - Blocked inputs (content policy violations)
 - Blocked outputs (harmful content detected)
 - PII redactions (anonymization events)
@@ -448,6 +461,7 @@ fields @timestamp, agent_name, review_id, execution_time
 **Trace ID Format**: `rev-YYYYMMDD-HHMMSS-{UUID}`
 
 **Logged Information**:
+
 - Request timestamp
 - User/role making request
 - Model invoked
@@ -464,19 +478,20 @@ fields @timestamp, agent_name, review_id, execution_time
 **CloudTrail Integration**: All API calls to Amazon Bedrock logged
 
 **Logged Actions**:
+
 - `InvokeModel` - Every model invocation
 - `ApplyGuardrail` - Guardrail checks
 - `GetGuardrail` - Guardrail configuration reads
 
 **CloudTrail Query Example**:
+
 ```bash
 # Find all Bedrock API calls in last hour
 aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=EventName,AttributeValue=InvokeModel \
   --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) \
   --max-results 50
-```
-
+```text
 ---
 
 ## Dashboards
@@ -523,6 +538,7 @@ aws cloudtrail lookup-events \
 **Data Source**: CloudWatch
 
 **Panels**:
+
 - Real-time model invocations
 - Cost tracking over time
 - Agent performance comparison
@@ -539,19 +555,21 @@ aws cloudtrail lookup-events \
 
 **Default Quotas** (per account, per region):
 
-| Model | Quota Type | Limit |
-|-------|------------|-------|
-| Claude Opus 4.6 | Requests per minute | 20 |
-| Claude Sonnet 4.6 | Requests per minute | 100 |
-| Claude Haiku 4.5 | Requests per minute | 200 |
+| Model               | Quota Type            | Limit   |
+| --------------------- | ----------------------- | --------- |
+| Claude Opus 4.6     | Requests per minute   | 20      |
+| Claude Sonnet 4.6   | Requests per minute   | 100     |
+| Claude Haiku 4.5    | Requests per minute   | 200     |
 
 **Token Limits**:
+
 - Input: 200,000 tokens per request
 - Output: 65,536 tokens per request
 
 ### Quota Increase Requests
 
 **Process**:
+
 1. Navigate to AWS Service Quotas console
 2. Select Amazon Bedrock
 3. Request quota increase
@@ -564,6 +582,7 @@ aws cloudtrail lookup-events \
 **Current Implementation**: Backoff retry with exponential delay
 
 **Configuration** (in `retry.py`):
+
 ```python
 @backoff.on_exception(
     backoff.expo,
@@ -572,8 +591,7 @@ aws cloudtrail lookup-events \
     base=2,  # 2s, 4s, 8s delays
     giveup=lambda e: not is_retryable(e)
 )
-```
-
+```text
 **Future Enhancement**: Implement token bucket algorithm for proactive rate limiting
 
 ---
@@ -585,6 +603,7 @@ aws cloudtrail lookup-events \
 **CloudWatch Anomaly Detection**: Enabled for key metrics
 
 **Detected Anomalies**:
+
 - Unusual spike in invocations (potential abuse)
 - Cost anomalies (runaway usage)
 - Error rate spikes (service degradation)
@@ -595,11 +614,13 @@ aws cloudtrail lookup-events \
 ### Security Alerts
 
 **Alert Channels**:
-- Email: security-team@example.com
+
+- Email: <security-team@example.com>
 - Slack: #aidlc-security-alerts
 - PagerDuty: On-call engineer (critical only)
 
 **Escalation**:
+
 1. Warning: CloudWatch alarm → Slack notification
 2. Critical: Multiple alarms → PagerDuty + email
 3. Incident: Manual escalation to security team
@@ -611,6 +632,7 @@ aws cloudtrail lookup-events \
 ### Monthly Reports
 
 **Generated Automatically**:
+
 - Total model invocations
 - Cost breakdown by model
 - Error rates and availability
@@ -624,6 +646,7 @@ aws cloudtrail lookup-events \
 ### Quarterly Audits
 
 **Audit Checklist**:
+
 - [ ] Review IAM policies for least privilege
 - [ ] Verify guardrail configuration matches documentation
 - [ ] Check CloudWatch logs retention compliance
@@ -642,6 +665,7 @@ aws cloudtrail lookup-events \
 **Trigger**: InvocationServerErrors > 10/minute
 
 **Steps**:
+
 1. Check Amazon Bedrock service health dashboard
 2. Review recent guardrail configuration changes
 3. Analyze CloudWatch logs for error patterns
@@ -654,6 +678,7 @@ aws cloudtrail lookup-events \
 **Trigger**: Hourly cost exceeds $10
 
 **Steps**:
+
 1. Identify high-token reviews in CloudWatch logs
 2. Check for runaway loops or retries
 3. Verify no unauthorized access (CloudTrail)
@@ -666,6 +691,7 @@ aws cloudtrail lookup-events \
 **Trigger**: >20 blocked requests in 5 minutes
 
 **Steps**:
+
 1. Review blocked content in guardrail logs
 2. Determine if attack attempt or legitimate content
 3. Adjust guardrail sensitivity if false positives
@@ -680,6 +706,7 @@ aws cloudtrail lookup-events \
 ### Quarterly Access Review
 
 **Process**:
+
 1. Export IAM users/roles with Amazon Bedrock permissions
 2. Verify each user/role still requires access
 3. Check for inactive accounts (no usage in 90 days)
@@ -687,6 +714,7 @@ aws cloudtrail lookup-events \
 5. Document changes
 
 **Checklist**:
+
 - [ ] Application roles: Verify least privilege
 - [ ] Developer access: Remove departed employees
 - [ ] Auditor access: Confirm read-only only
@@ -695,6 +723,7 @@ aws cloudtrail lookup-events \
 ### Just-In-Time Access
 
 **For Sensitive Operations**:
+
 - Guardrail modification requires approval
 - Temporary elevated access (max 4 hours)
 - All actions logged in CloudTrail
@@ -712,6 +741,6 @@ aws cloudtrail lookup-events \
 
 ## Change Log
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-03-19 | 1.0 | Initial monitoring and access control documentation |
+| Date         | Version   | Changes                                               |
+| -------------- | ----------- | ------------------------------------------------------- |
+| 2026-03-19   | 1.0       | Initial monitoring and access control documentation   |

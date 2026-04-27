@@ -1,4 +1,5 @@
-<!--
+<!-- markdownlint-disable MD041 MD060 -->
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,13 +48,14 @@ This document provides legal approval documentation and compliance verification 
 
 ## Model Approval Matrix
 
-| Model | Vendor | Marketplace | Status | Approval Date | Use Case |
-|-------|--------|-------------|--------|---------------|----------|
-| Claude Opus 4.6 | Anthropic | Amazon Bedrock | ✅ Approved | 2024-11-15 | Detailed critique analysis |
-| Claude Sonnet 4.6 | Anthropic | Amazon Bedrock | ✅ Approved | 2024-11-15 | General design review |
-| Claude Haiku 4.5 | Anthropic | Amazon Bedrock | ✅ Approved | 2024-10-22 | Quick classification |
+| Model               | Vendor      | Marketplace      | Status       | Approval Date   | Use Case                     |
+| --------------------- | ------------- | ------------------ | -------------- | ----------------- | ------------------------------ |
+| Claude Opus 4.6     | Anthropic   | Amazon Bedrock   | ✅ Approved  | 2024-11-15      | Detailed critique analysis   |
+| Claude Sonnet 4.6   | Anthropic   | Amazon Bedrock   | ✅ Approved  | 2024-11-15      | General design review        |
+| Claude Haiku 4.5    | Anthropic   | Amazon Bedrock   | ✅ Approved  | 2024-10-22      | Quick classification         |
 
 **Model ID Mapping**:
+
 - `claude-opus-4-6` → `us.anthropic.claude-opus-4-6-v1`
 - `claude-sonnet-4-6` → `us.anthropic.claude-sonnet-4-6`
 - `claude-haiku-4-5` → `us.anthropic.claude-haiku-4-5-20251001-v1:0`
@@ -91,6 +93,7 @@ Amazon Bedrock models are **pre-approved for enterprise use** under the AWS Cust
 **Parties**: [Your Organization] and Amazon Web Services, Inc.
 
 **Key Terms**:
+
 - Service Level Agreements (SLAs)
 - Data processing and protection
 - Intellectual property rights
@@ -102,9 +105,10 @@ Amazon Bedrock models are **pre-approved for enterprise use** under the AWS Cust
 ### 2. Amazon Bedrock Service Terms
 
 **Document**: AWS Service Terms - Amazon Bedrock Section
-**URL**: https://aws.amazon.com/service-terms/
+**URL**: <https://aws.amazon.com/service-terms/>
 
 **Key Provisions**:
+
 - **51.1**: Service Description
 - **51.2**: Prohibited Uses
 - **51.3**: Data Processing
@@ -114,7 +118,6 @@ Amazon Bedrock models are **pre-approved for enterprise use** under the AWS Cust
 **Relevant Excerpts**:
 
 > *"Third-party content may include machine learning models provided by third-party model providers. Your use of third-party content through Amazon Bedrock is subject to the applicable third-party terms."*
-
 > *"We process Your Content according to the AWS Data Processing Addendum."*
 
 ### 3. AWS Data Processing Addendum (DPA)
@@ -123,6 +126,7 @@ Amazon Bedrock models are **pre-approved for enterprise use** under the AWS Cust
 **Effective**: Covers all AWS services including Amazon Bedrock
 
 **Key Protections**:
+
 - Data residency controls
 - Sub-processor transparency (Anthropic listed)
 - Data deletion guarantees
@@ -136,7 +140,7 @@ Amazon Bedrock models are **pre-approved for enterprise use** under the AWS Cust
 
 ### Data Flow
 
-```
+```text
 Design Documents (Customer Data)
     ↓
 AIDLC Application (Your Infrastructure)
@@ -146,24 +150,22 @@ Amazon Bedrock API (AWS Infrastructure)
 Claude Models (Anthropic Processing - AWS Enclave)
     ↓
 AI Response (Returns to Your Infrastructure)
-```
-
+```text
 ### Data Handling Commitments
 
-| Aspect | AWS/Anthropic Commitment | AIDLC Implementation |
-|--------|--------------------------|----------------------|
-| **Data Retention** | Not used for model training | Transient processing only |
-| **Data Encryption** | In transit (TLS 1.2+) | Enforced via boto3 |
-| **Data Residency** | Regional processing (us-east-1) | Configured in AWS profile |
-| **Data Deletion** | Immediate after processing | No local LLM storage |
-| **Logging** | Opt-in only | CloudWatch configured |
+| Aspect                | AWS/Anthropic Commitment          | AIDLC Implementation        |
+| ----------------------- | ----------------------------------- | ----------------------------- |
+| **Data Retention**    | Not used for model training       | Transient processing only   |
+| **Data Encryption**   | In transit (TLS 1.2+)             | Enforced via boto3          |
+| **Data Residency**    | Regional processing (us-east-1)   | Configured in AWS profile   |
+| **Data Deletion**     | Immediate after processing        | No local LLM storage        |
+| **Logging**           | Opt-in only                       | CloudWatch configured       |
 
 ### Anthropic Data Commitments
 
 From [Anthropic's Commercial Terms](https://www.anthropic.com/legal/commercial-terms):
 
 > *"Anthropic will not use Customer Data to train or improve our models."*
-
 > *"Customer Data is deleted immediately after processing, except as required for billing and security purposes."*
 
 **Verification**: Amazon Bedrock enforces these terms via API design (no training data collection)
@@ -177,6 +179,7 @@ From [Anthropic's Commercial Terms](https://www.anthropic.com/legal/commercial-t
 **Claude Models**: Owned by Anthropic
 **License**: Non-exclusive right to use via Amazon Bedrock
 **IP Rights**: Customer retains all rights to:
+
 - Input design documents
 - Generated review reports
 - Derivative work based on AI recommendations
@@ -184,6 +187,7 @@ From [Anthropic's Commercial Terms](https://www.anthropic.com/legal/commercial-t
 ### Output Ownership
 
 **AI-Generated Content**:
+
 - Review findings, recommendations, and alternatives are owned by the customer
 - No Anthropic IP claims on outputs
 - Customer may use, modify, and distribute outputs freely
@@ -197,6 +201,7 @@ From [Anthropic's Commercial Terms](https://www.anthropic.com/legal/commercial-t
 ### Prohibited Use Cases (Amazon Bedrock Terms)
 
 Amazon Bedrock **PROHIBITS** use for:
+
 - ❌ Child exploitation content
 - ❌ Illegal activities
 - ❌ Spreading malware or viruses
@@ -210,13 +215,13 @@ Amazon Bedrock **PROHIBITS** use for:
 
 **IMPORTANT DISCLAIMER**: The table below shows AWS infrastructure certifications only. **Customers are solely responsible for determining compliance applicability and implementing all required controls for their specific use case.**
 
-| Regulation | AWS Infrastructure Status | Customer Responsibility |
-|------------|--------------------------|------------------------|
-| **GDPR** | ✅ AWS has EU-US Data Privacy Framework certification<br/>✅ AWS Data Processing Addendum (DPA) available | ❌ Customer must determine if GDPR applies<br/>❌ Customer must perform DPIA<br/>❌ Customer must implement all GDPR controls<br/>❌ Customer must document lawful basis for processing<br/>⚠️ Review and sign AWS DPA if processing EU personal data |
-| **HIPAA** | ✅ Amazon Bedrock is HIPAA-eligible<br/>✅ AWS Business Associate Addendum (BAA) available | ❌ Customer must determine if PHI is processed<br/>❌ Customer must sign AWS BAA<br/>❌ Customer must implement all HIPAA safeguards<br/>❌ Customer must perform risk analysis<br/>**Note**: Design documents typically do not contain PHI |
-| **SOC 2** | ✅ AWS infrastructure has SOC 2 Type II attestation | ❌ Customer must obtain their own SOC 2 audit<br/>❌ Customer must implement SOC 2 trust service criteria<br/>❌ Customer must document controls and obtain attestation<br/>**AWS certification does NOT transfer to customer applications** |
-| **ISO 27001** | ✅ AWS infrastructure has ISO 27001 certification | ❌ Customer must obtain their own ISO 27001 certification<br/>❌ Customer must implement ISMS (Information Security Management System)<br/>❌ Customer must document policies and perform audits<br/>**AWS certification does NOT transfer to customer applications** |
-| **FedRAMP** | ✅ AWS GovCloud regions are FedRAMP authorized | ❌ Customer must use FedRAMP-authorized regions (e.g., us-gov-west-1)<br/>❌ Customer must obtain FedRAMP authorization for their application<br/>❌ Customer must implement all FedRAMP controls<br/>**Note**: Standard commercial regions are not FedRAMP authorized |
+| Regulation      | AWS Infrastructure Status                                                                                 | Customer Responsibility                                                                                                                                                                                                                                                 |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GDPR**        | ✅ AWS has EU-US Data Privacy Framework certification<br/>✅ AWS Data Processing Addendum (DPA) available | ❌ Customer must determine if GDPR applies<br/>❌ Customer must perform DPIA<br/>❌ Customer must implement all GDPR controls<br/>❌ Customer must document lawful basis for processing<br/>⚠️ Review and sign AWS DPA if processing EU personal data                   |
+| **HIPAA**       | ✅ Amazon Bedrock is HIPAA-eligible<br/>✅ AWS Business Associate Addendum (BAA) available                | ❌ Customer must determine if PHI is processed<br/>❌ Customer must sign AWS BAA<br/>❌ Customer must implement all HIPAA safeguards<br/>❌ Customer must perform risk analysis<br/>**Note**: Design documents typically do not contain PHI                             |
+| **SOC 2**       | ✅ AWS infrastructure has SOC 2 Type II attestation                                                       | ❌ Customer must obtain their own SOC 2 audit<br/>❌ Customer must implement SOC 2 trust service criteria<br/>❌ Customer must document controls and obtain attestation<br/>**AWS certification does NOT transfer to customer applications**                            |
+| **ISO 27001**   | ✅ AWS infrastructure has ISO 27001 certification                                                         | ❌ Customer must obtain their own ISO 27001 certification<br/>❌ Customer must implement ISMS (Information Security Management System)<br/>❌ Customer must document policies and perform audits<br/>**AWS certification does NOT transfer to customer applications**   |
+| **FedRAMP**     | ✅ AWS GovCloud regions are FedRAMP authorized                                                            | ❌ Customer must use FedRAMP-authorized regions (e.g., us-gov-west-1)<br/>❌ Customer must obtain FedRAMP authorization for their application<br/>❌ Customer must implement all FedRAMP controls<br/>**Note**: Standard commercial regions are not FedRAMP authorized  |
 
 ---
 
@@ -235,6 +240,7 @@ Amazon Bedrock **PROHIBITS** use for:
 5. **Technical Controls ≠ Compliance**: Implementing encryption, access controls, and logging are necessary but not sufficient for compliance. Customers must also implement policies, procedures, training, incident response, and other organizational controls.
 
 **See Also**:
+
 - [AWS Compliance Programs](https://aws.amazon.com/compliance/programs/)
 - [AWS Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/)
 - [DATA_CLASSIFICATION_AND_ENCRYPTION.md](../security/DATA_CLASSIFICATION_AND_ENCRYPTION.md) for detailed compliance guidance
@@ -248,6 +254,7 @@ Amazon Bedrock **PROHIBITS** use for:
 **Pricing Type**: Pay-per-use (on-demand)
 
 **Claude Model Costs** (as of 2026):
+
 - Claude Opus 4.6: $15.00 per million input tokens, $75.00 per million output tokens
 - Claude Sonnet 4.6: $3.00 per million input tokens, $15.00 per million output tokens
 - Claude Haiku 4.5: $0.25 per million input tokens, $1.25 per million output tokens
@@ -259,12 +266,14 @@ Amazon Bedrock **PROHIBITS** use for:
 ### Cost Allocation
 
 **AIDLC Average Cost Per Review**:
+
 - Input tokens: ~50,000 (design document + patterns)
 - Output tokens: ~10,000 (review findings)
 - Model: Claude Sonnet 4.6 (default)
 - Cost: ~$0.30 per review
 
 **Annual Estimate** (100 reviews/month):
+
 - Reviews: 1,200/year
 - Cost: ~$360/year (model inference only)
 - Total AWS Cost: ~$500/year (including Amazon Bedrock, S3, CloudWatch)
@@ -294,6 +303,7 @@ Amazon Bedrock **PROHIBITS** use for:
 ### Alternative Models
 
 If Anthropic Claude becomes unavailable, alternatives include:
+
 - **Amazon Titan** (AWS native)
 - **AI21 Jurassic** (via Amazon Bedrock)
 - **Cohere Command** (via Amazon Bedrock)
@@ -308,11 +318,13 @@ If Anthropic Claude becomes unavailable, alternatives include:
 ### Anthropic Security
 
 **Certifications**:
+
 - SOC 2 Type II ✅
 - ISO 27001 ✅
 - GDPR Compliance ✅
 
 **Security Practices**:
+
 - Red team testing
 - Responsible disclosure program
 - Security audits by third parties
@@ -322,6 +334,7 @@ If Anthropic Claude becomes unavailable, alternatives include:
 ### Amazon Bedrock Security
 
 **Inherited from AWS**:
+
 - FedRAMP Moderate ✅
 - HIPAA eligible ✅
 - PCI DSS ✅
@@ -329,6 +342,7 @@ If Anthropic Claude becomes unavailable, alternatives include:
 - SOC 1, 2, 3 ✅
 
 **Additional Controls**:
+
 - VPC endpoints for private connectivity
 - AWS PrivateLink support
 - Customer-managed encryption keys (KMS)
@@ -340,6 +354,7 @@ If Anthropic Claude becomes unavailable, alternatives include:
 ### Usage Monitoring
 
 **Tracked Metrics**:
+
 - Number of model invocations
 - Token usage (input and output)
 - Cost per review
@@ -353,12 +368,14 @@ If Anthropic Claude becomes unavailable, alternatives include:
 ### Compliance Audits
 
 **Internal Audit**:
+
 - Quarterly review of model usage
 - Verification of approved models only
 - Cost analysis
 - Security posture assessment
 
 **External Audit**:
+
 - Annual security audit includes AI usage review
 - Vendor risk assessment (Anthropic via AWS)
 - Data protection compliance verification
@@ -368,6 +385,7 @@ If Anthropic Claude becomes unavailable, alternatives include:
 **Next Review Date**: 2026-12-31
 **Reviewer**: Legal and Procurement teams
 **Focus Areas**:
+
 - AWS Customer Agreement renewal
 - Amazon Bedrock Service Terms updates
 - Anthropic sub-processor status
@@ -392,11 +410,13 @@ If AIDLC stops using Claude models:
 ### Data Retention
 
 **During Use**:
+
 - Input/output logged only if CloudWatch logging enabled (opt-in)
 - Logs retained per configured retention period
 - No training data collection
 
 **After Termination**:
+
 - Customer can delete all logs immediately
 - AWS deletes per standard data deletion process (30 days)
 - Anthropic has no data to delete (transient processing only)
@@ -412,6 +432,7 @@ If AIDLC stops using Claude models:
 **Approval Status**: ✅ Approved for use in AIDLC Design Reviewer
 
 **Findings**:
+
 - Amazon Bedrock models are pre-approved under AWS Customer Agreement
 - No separate contract with Anthropic required
 - Data protection adequate via AWS DPA
@@ -424,6 +445,7 @@ If AIDLC stops using Claude models:
 **Approval Status**: ✅ Approved with guardrails
 
 **Requirements**:
+
 - Amazon Bedrock Guardrails must be configured
 - CloudWatch logging must be enabled
 - Quarterly usage review required
@@ -450,9 +472,9 @@ If AIDLC stops using Claude models:
 
 ## Change Log
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-03-19 | 1.0 | Initial legal approval documentation |
+| Date         | Version   | Changes                                |
+| -------------- | ----------- | ---------------------------------------- |
+| 2026-03-19   | 1.0       | Initial legal approval documentation   |
 
 ---
 

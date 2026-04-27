@@ -1,4 +1,6 @@
 <!--
+# Cdn
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # CDN (Content Delivery Network)
 
 ## Category
+
 Scalability
 
 ## Description
+
 Distributes static content across geographically dispersed servers to serve content from locations closest to users. Reduces latency, improves load times, and offloads traffic from origin servers.
 
 ## When to Use
+
 Use CDN for serving static assets to global users, when you need to reduce bandwidth costs, or when improving page load times is critical for user experience.
 
 ## Example
+
 A web application serving images, CSS, and JavaScript through CloudFront CDN. Static assets are cached at edge locations worldwide, served from the nearest location to each user.

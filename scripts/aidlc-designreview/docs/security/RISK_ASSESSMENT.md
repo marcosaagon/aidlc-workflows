@@ -1,4 +1,5 @@
-<!--
+<!-- markdownlint-disable MD041 MD060 -->
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +37,7 @@ This document provides a comprehensive risk assessment for the AIDLC Design Revi
 **Overall Risk Rating**: **MEDIUM**
 
 **Key Findings**:
+
 - Security risks are well-mitigated through AWS-managed infrastructure and secure coding practices
 - Operational risks are moderate due to dependency on external AI services
 - Compliance risks are low for current use case (technical design review)
@@ -51,18 +53,19 @@ This document provides a comprehensive risk assessment for the AIDLC Design Revi
 
 Under the AWS Shared Responsibility Model, risk ownership is distributed between AWS and customers:
 
-| Risk Category | AWS Owns | Customer Owns | Shared |
-|--------------|----------|---------------|--------|
-| **Infrastructure Risks** | ✅ Physical security<br/>✅ Network infrastructure<br/>✅ Hypervisor security | ❌ Workstation security<br/>❌ OS patching<br/>❌ Endpoint protection | - |
-| **Service Availability** | ✅ Amazon Bedrock SLA<br/>✅ Service redundancy<br/>✅ Regional failover | ❌ Application-level failover<br/>❌ Retry logic<br/>❌ Timeout handling | - |
-| **Data Protection** | ✅ Amazon Bedrock encryption<br/>✅ Service data deletion | ❌ Classify data<br/>❌ Disk encryption<br/>❌ Secure file deletion | ⚠️ Encryption key management |
-| **Access Control** | ✅ IAM service<br/>✅ Policy enforcement | ❌ Define IAM policies<br/>❌ Manage credentials<br/>❌ Enable MFA | - |
-| **Logging & Monitoring** | ✅ CloudWatch/CloudTrail service | ❌ Enable logging<br/>❌ Define retention<br/>❌ Monitor and alert | - |
-| **Compliance** | ✅ AWS infrastructure compliance<br/>✅ SOC 2, ISO 27001 for AWS | ❌ Application compliance<br/>❌ Risk assessment<br/>❌ Audit evidence | - |
-| **Incident Response** | ✅ AWS infrastructure incidents | ❌ Application incidents<br/>❌ Unauthorized access<br/>❌ Data breaches | - |
-| **Supply Chain** | ✅ Amazon Bedrock dependencies | ❌ Application dependencies (Python packages)<br/>❌ Dependency scanning | - |
+| Risk Category              | AWS Owns                                                                      | Customer Owns                                                             | Shared                         |
+| ---------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------- |
+| **Infrastructure Risks**   | ✅ Physical security<br/>✅ Network infrastructure<br/>✅ Hypervisor security | ❌ Workstation security<br/>❌ OS patching<br/>❌ Endpoint protection     | -                              |
+| **Service Availability**   | ✅ Amazon Bedrock SLA<br/>✅ Service redundancy<br/>✅ Regional failover      | ❌ Application-level failover<br/>❌ Retry logic<br/>❌ Timeout handling  | -                              |
+| **Data Protection**        | ✅ Amazon Bedrock encryption<br/>✅ Service data deletion                     | ❌ Classify data<br/>❌ Disk encryption<br/>❌ Secure file deletion       | ⚠️ Encryption key management   |
+| **Access Control**         | ✅ IAM service<br/>✅ Policy enforcement                                      | ❌ Define IAM policies<br/>❌ Manage credentials<br/>❌ Enable MFA        | -                              |
+| **Logging & Monitoring**   | ✅ CloudWatch/CloudTrail service                                              | ❌ Enable logging<br/>❌ Define retention<br/>❌ Monitor and alert        | -                              |
+| **Compliance**             | ✅ AWS infrastructure compliance<br/>✅ SOC 2, ISO 27001 for AWS              | ❌ Application compliance<br/>❌ Risk assessment<br/>❌ Audit evidence    | -                              |
+| **Incident Response**      | ✅ AWS infrastructure incidents                                               | ❌ Application incidents<br/>❌ Unauthorized access<br/>❌ Data breaches  | -                              |
+| **Supply Chain**           | ✅ Amazon Bedrock dependencies                                                | ❌ Application dependencies (Python packages)<br/>❌ Dependency scanning  | -                              |
 
 **Legend**:
+
 - ✅ AWS owns and manages the risk
 - ❌ Customer owns and must manage the risk
 - ⚠️ Shared ownership (both AWS and customer have responsibilities)
@@ -80,12 +83,14 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 7. **Operational Monitoring**: Customers must enable CloudWatch/CloudTrail and actively monitor for anomalies
 
 **Customers should NOT assume**:
+
 - ❌ That using Amazon Bedrock automatically makes their application compliant with regulations
 - ❌ That AWS will detect or respond to unauthorized access to customer AWS accounts
 - ❌ That AWS will monitor customer application logs or detect security incidents
 - ❌ That AWS will secure customer workstations or encrypt customer data at rest
 
 **See Also**:
+
 - [AWS_BEDROCK_SECURITY_GUIDELINES.md](./AWS_BEDROCK_SECURITY_GUIDELINES.md) for detailed security responsibilities
 - [THREAT_MODEL.md](./THREAT_MODEL.md) for threat-specific responsibility mapping
 
@@ -96,6 +101,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 ### Risk Scoring
 
 **Impact Levels**:
+
 - **Critical (5)**: Catastrophic impact, significant financial/reputational damage
 - **High (4)**: Major impact, substantial disruption
 - **Medium (3)**: Moderate impact, noticeable disruption
@@ -103,6 +109,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 - **Negligible (1)**: No significant impact
 
 **Likelihood Levels**:
+
 - **Very Likely (5)**: Expected to occur (>80% probability)
 - **Likely (4)**: Probably will occur (60-80%)
 - **Possible (3)**: May occur (40-60%)
@@ -112,6 +119,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score** = Impact × Likelihood
 
 **Risk Levels**:
+
 - **Critical (20-25)**: Immediate action required
 - **High (15-19)**: Priority remediation
 - **Medium (8-14)**: Planned remediation
@@ -133,6 +141,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 8 (MEDIUM)
 
 **Mitigations**:
+
 - ✅ Temporary credentials only (no long-term access keys)
 - ✅ Credential scrubbing in logs
 - ✅ AWS CloudTrail monitoring
@@ -142,6 +151,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Implement automated credential rotation monitoring
 - Set up CloudWatch alarms for unauthorized API calls
 - Conduct quarterly IAM access reviews
@@ -159,6 +169,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 6 (LOW)
 
 **Mitigations**:
+
 - ✅ Input validation (type, size checks)
 - ⚠️ Amazon Bedrock Guardrails (optional, recommended)
 - ✅ Structured prompt templates
@@ -167,6 +178,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Enable Amazon Bedrock Guardrails in production
 - Implement prompt injection detection patterns
 - Monitor for unusual AI responses
@@ -184,6 +196,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 8 (MEDIUM)
 
 **Mitigations**:
+
 - ⚠️ Disk encryption (user responsibility - BitLocker, FileVault, LUKS)
 - ✅ File permission restrictions (chmod 640)
 - ✅ No permanent storage of sensitive data
@@ -192,6 +205,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: MEDIUM (depends on user environment)
 
 **Action Plan**:
+
 - Document disk encryption requirements prominently
 - Provide file permission setup scripts
 - Implement file integrity monitoring recommendations
@@ -209,6 +223,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 12 (MEDIUM)
 
 **Mitigations**:
+
 - ✅ Dependency scanning (pip-audit)
 - ✅ Security scanning (Bandit, Semgrep)
 - ✅ Version pinning (pyproject.toml)
@@ -217,6 +232,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: MEDIUM
 
 **Action Plan**:
+
 - Implement Dependabot for automated dependency updates
 - Generate SBOM (Software Bill of Materials)
 - Monthly dependency vulnerability reviews
@@ -234,6 +250,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 3 (NEGLIGIBLE)
 
 **Mitigations**:
+
 - ✅ Retry logic with exponential backoff
 - ✅ Graceful error handling
 - ✅ User notification of service issues
@@ -242,6 +259,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: NEGLIGIBLE
 
 **Action Plan**:
+
 - Monitor AWS Service Health Dashboard
 - Document manual review procedures for outages
 
@@ -260,6 +278,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 9 (MEDIUM)
 
 **Mitigations**:
+
 - ✅ Human review required (advisory only)
 - ✅ Multiple AI agents for cross-validation
 - ✅ Legal disclaimer in reports
@@ -268,6 +287,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: MEDIUM (inherent to AI)
 
 **Action Plan**:
+
 - Collect user feedback on recommendation quality
 - Implement hallucination detection patterns
 - Conduct quarterly model performance reviews
@@ -285,6 +305,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 4 (LOW)
 
 **Mitigations**:
+
 - ✅ Token usage limits (750KB prompts, 100KB documents)
 - ✅ CloudWatch cost alarms
 - ✅ Retry limits (max 4 attempts)
@@ -293,6 +314,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Set AWS Budgets for Amazon Bedrock spend
 - Monthly cost review and optimization
 - Implement cost-per-review tracking
@@ -310,6 +332,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 6 (LOW)
 
 **Mitigations**:
+
 - ✅ Configuration validation (Pydantic)
 - ✅ Clear error messages
 - ✅ Example configuration provided
@@ -318,6 +341,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Add configuration wizard/validator tool
 - Improve error message clarity
 - Provide troubleshooting guide
@@ -335,6 +359,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 12 (MEDIUM)
 
 **Mitigations**:
+
 - ✅ Model version tracking in reports
 - ✅ Cross-region inference models (stable IDs)
 - ⚠️ Model version pinning (not available for Bedrock)
@@ -343,6 +368,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: MEDIUM (inherent to managed AI service)
 
 **Action Plan**:
+
 - Document model update notifications
 - Test new model versions before production use
 - Maintain model performance baseline metrics
@@ -362,6 +388,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 5 (LOW)
 
 **Mitigations**:
+
 - ✅ Transient processing (no data retention)
 - ✅ AWS Data Processing Addendum
 - ⚠️ Amazon Bedrock Guardrails (PII redaction - optional)
@@ -370,6 +397,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Enable Amazon Bedrock Guardrails (PII redaction)
 - Add PII detection warnings
 - Conduct Data Protection Impact Assessment (DPIA) if processing EU data
@@ -387,6 +415,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 5 (LOW)
 
 **Mitigations**:
+
 - ✅ User responsibility (legal disclaimer)
 - ✅ No automatic external transmission
 - ✅ Local processing only
@@ -394,6 +423,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW (user responsibility)
 
 **Action Plan**:
+
 - Add export control warning to documentation
 - Provide guidance on handling controlled technical data
 
@@ -410,6 +440,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 4 (LOW)
 
 **Mitigations**:
+
 - ✅ Advisory only (no binding recommendations)
 - ✅ Human review required
 - ✅ Legal disclaimer
@@ -418,6 +449,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Emphasize advisory nature in all documentation
 - Recommend patent searches for novel architectures
 
@@ -436,6 +468,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 9 (MEDIUM)
 
 **Mitigations**:
+
 - ✅ Comprehensive documentation
 - ✅ Code comments and architecture docs
 - ✅ Open-source licensing (Apache 2.0)
@@ -444,6 +477,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: MEDIUM
 
 **Action Plan**:
+
 - Document critical system knowledge
 - Cross-train team members
 - Establish contributor onboarding process
@@ -461,6 +495,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 4 (LOW)
 
 **Mitigations**:
+
 - ✅ Abstraction layer (BaseAgent)
 - ✅ Multiple model support (Opus, Sonnet, Haiku)
 - ⚠️ Alternative providers identified (Bedrock marketplace)
@@ -469,6 +504,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: LOW
 
 **Action Plan**:
+
 - Document alternative AI providers
 - Test migration to alternative models
 - Maintain vendor relationship monitoring
@@ -486,6 +522,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Risk Score**: 2 (NEGLIGIBLE)
 
 **Mitigations**:
+
 - ✅ Git version control (GitHub/GitLab)
 - ✅ Cloud hosting (distributed)
 - ✅ Stateless application (easy rebuild)
@@ -494,6 +531,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Residual Risk**: NEGLIGIBLE
 
 **Action Plan**:
+
 - Maintain repository backups
 - Document rebuild procedures
 - Test disaster recovery annually
@@ -502,25 +540,26 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 
 ## Risk Summary Matrix
 
-| Risk ID | Category | Risk Name | Impact | Likelihood | Score | Level | Residual |
-|---------|----------|-----------|--------|------------|-------|-------|----------|
-| SEC-001 | Security | AWS Credential Compromise | 4 | 2 | 8 | MED | LOW |
-| SEC-002 | Security | Prompt Injection | 3 | 2 | 6 | LOW | LOW |
-| SEC-003 | Security | Data Breach | 4 | 2 | 8 | MED | MED |
-| SEC-004 | Security | Dependency Vulnerabilities | 4 | 3 | 12 | MED | MED |
-| SEC-005 | Security | Bedrock API Outage | 3 | 1 | 3 | NEG | NEG |
-| OPS-001 | Operational | AI Hallucinations | 3 | 3 | 9 | MED | MED |
-| OPS-002 | Operational | Cost Overruns | 2 | 2 | 4 | LOW | LOW |
-| OPS-003 | Operational | Configuration Errors | 2 | 3 | 6 | LOW | LOW |
-| OPS-004 | Operational | Model Version Changes | 3 | 4 | 12 | MED | MED |
-| COMP-001 | Compliance | GDPR Non-Compliance | 5 | 1 | 5 | LOW | LOW |
-| COMP-002 | Compliance | Export Control | 5 | 1 | 5 | LOW | LOW |
-| COMP-003 | Compliance | IP Disputes | 4 | 1 | 4 | LOW | LOW |
-| BC-001 | Business Continuity | Key Personnel Loss | 3 | 3 | 9 | MED | MED |
-| BC-002 | Business Continuity | Bedrock Discontinuation | 4 | 1 | 4 | LOW | LOW |
-| BC-003 | Business Continuity | Disaster Recovery | 2 | 1 | 2 | NEG | NEG |
+| Risk ID    | Category              | Risk Name                    | Impact   | Likelihood   | Score   | Level   | Residual   |
+| ------------ | ----------------------- | ------------------------------ | ---------- | -------------- | --------- | --------- | ------------ |
+| SEC-001    | Security              | AWS Credential Compromise    | 4        | 2            | 8       | MED     | LOW        |
+| SEC-002    | Security              | Prompt Injection             | 3        | 2            | 6       | LOW     | LOW        |
+| SEC-003    | Security              | Data Breach                  | 4        | 2            | 8       | MED     | MED        |
+| SEC-004    | Security              | Dependency Vulnerabilities   | 4        | 3            | 12      | MED     | MED        |
+| SEC-005    | Security              | Bedrock API Outage           | 3        | 1            | 3       | NEG     | NEG        |
+| OPS-001    | Operational           | AI Hallucinations            | 3        | 3            | 9       | MED     | MED        |
+| OPS-002    | Operational           | Cost Overruns                | 2        | 2            | 4       | LOW     | LOW        |
+| OPS-003    | Operational           | Configuration Errors         | 2        | 3            | 6       | LOW     | LOW        |
+| OPS-004    | Operational           | Model Version Changes        | 3        | 4            | 12      | MED     | MED        |
+| COMP-001   | Compliance            | GDPR Non-Compliance          | 5        | 1            | 5       | LOW     | LOW        |
+| COMP-002   | Compliance            | Export Control               | 5        | 1            | 5       | LOW     | LOW        |
+| COMP-003   | Compliance            | IP Disputes                  | 4        | 1            | 4       | LOW     | LOW        |
+| BC-001     | Business Continuity   | Key Personnel Loss           | 3        | 3            | 9       | MED     | MED        |
+| BC-002     | Business Continuity   | Bedrock Discontinuation      | 4        | 1            | 4       | LOW     | LOW        |
+| BC-003     | Business Continuity   | Disaster Recovery            | 2        | 1            | 2       | NEG     | NEG        |
 
 **Total Risks**: 15
+
 - **Critical**: 0
 - **High**: 0
 - **Medium**: 8
@@ -538,6 +577,7 @@ Under the AWS Shared Responsibility Model, risk ownership is distributed between
 **Priority**: HIGH | **Effort**: LOW (1 hour) | **Impact**: Reduces prompt injection and PII exposure risks
 
 **Implementation Commands**:
+
 ```bash
 # Create guardrail
 aws bedrock create-guardrail \
@@ -557,21 +597,21 @@ vi config/config.yaml
 # review:
 #   guardrail_id: "YOUR_GUARDRAIL_ID"
 #   guardrail_version: "1"
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Guardrail created and active
 - ✅ Test passes: Guardrail blocks prompt injection test case
 - ✅ Guardrail blocks PII test case (SSN, credit card numbers)
 
 **Verification**:
+
 ```bash
 # Test guardrail
 echo "Test input: SSN 123-45-6789" > test-pii.txt
 design-reviewer review ./aidlc-docs --input test-pii.txt
 # Should fail with guardrail error
-```
-
+```text
 ---
 
 #### 2. Document Disk Encryption Requirements (SEC-003)
@@ -579,6 +619,7 @@ design-reviewer review ./aidlc-docs --input test-pii.txt
 **Priority**: HIGH | **Effort**: LOW (30 minutes) | **Impact**: Reduces data breach risk
 
 **Implementation Steps**:
+
 ```bash
 # Step 1: Create user guidance document
 cat > docs/deployment/DISK_ENCRYPTION_GUIDE.md <<'EOF'
@@ -617,9 +658,9 @@ EOF
 # Step 3: Add to installation checklist
 git add docs/deployment/DISK_ENCRYPTION_GUIDE.md README.md
 git commit -m "Document disk encryption requirements"
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Disk encryption guide created
 - ✅ README.md updated with security requirement
 - ✅ All production users verified (send encryption status screenshots)
@@ -631,6 +672,7 @@ git commit -m "Document disk encryption requirements"
 **Priority**: HIGH | **Effort**: LOW (30 minutes) | **Impact**: Automates dependency vulnerability management
 
 **Implementation Commands**:
+
 ```bash
 # Create Dependabot configuration
 cat > .github/dependabot.yml <<'EOF'
@@ -668,23 +710,23 @@ gh repo edit --enable-automated-security-fixes
 git add .github/dependabot.yml
 git commit -m "Add Dependabot configuration for automated dependency updates"
 git push
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Dependabot configuration merged to main branch
 - ✅ First Dependabot PR created within 7 days
 - ✅ Security team receives PR notifications
 - ✅ Automated security fixes enabled for critical vulnerabilities
 
 **Verification**:
+
 ```bash
 # Check Dependabot status
 gh api repos/:owner/:repo/vulnerability-alerts
 
 # View open Dependabot PRs
 gh pr list --label dependencies
-```
-
+```text
 ---
 
 ### Short-Term Actions (Q2 2026)
@@ -694,6 +736,7 @@ gh pr list --label dependencies
 **Priority**: MEDIUM | **Effort**: LOW (1 hour) | **Impact**: Prevents cost overruns
 
 **Implementation Commands**:
+
 ```bash
 # Step 1: Create SNS topic for cost alerts
 aws sns create-topic --name bedrock-cost-alerts
@@ -760,9 +803,9 @@ aws cloudwatch put-metric-alarm \
   --threshold 1000000 \
   --comparison-operator GreaterThanThreshold \
   --alarm-actions arn:aws:sns:us-east-1:ACCOUNT-ID:bedrock-cost-alerts
-```
-
+```text
 **Success Criteria**:
+
 - ✅ AWS Budget created with $500/month limit
 - ✅ SNS topic configured with finance team email
 - ✅ Alert at 80% of budget
@@ -770,6 +813,7 @@ aws cloudwatch put-metric-alarm \
 - ✅ Test alert received within 24 hours
 
 **Verification**:
+
 ```bash
 # Check budget status
 aws budgets describe-budget \
@@ -780,8 +824,7 @@ aws budgets describe-budget \
 aws sns publish \
   --topic-arn arn:aws:sns:us-east-1:ACCOUNT-ID:bedrock-cost-alerts \
   --message "Test cost alert"
-```
-
+```text
 ---
 
 #### 5. Model Performance Baseline (OPS-004)
@@ -789,6 +832,7 @@ aws sns publish \
 **Priority**: MEDIUM | **Effort**: MEDIUM (4 hours) | **Impact**: Enables detection of model quality degradation
 
 **Implementation Steps**:
+
 ```bash
 # Step 1: Create test suite for model quality
 cat > tests/model_quality/baseline_test.py <<'EOF'
@@ -869,9 +913,9 @@ chmod +x scripts/track-model-performance.sh
 # Step 3: Schedule daily tracking
 crontab -e
 # Add: 0 3 * * * /path/to/scripts/track-model-performance.sh
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Baseline test suite created with 3+ quality tests
 - ✅ Baseline metrics established (run 10 times, calculate average)
 - ✅ Daily performance tracking scheduled
@@ -879,6 +923,7 @@ crontab -e
 - ✅ Metrics dashboard created (Grafana/CloudWatch)
 
 **Verification**:
+
 ```bash
 # Run baseline tests
 uv run pytest tests/model_quality/
@@ -886,8 +931,7 @@ uv run pytest tests/model_quality/
 # Generate performance report
 ./scripts/track-model-performance.sh
 cat metrics/model-performance.jsonl | jq -s 'map(.quality_score) | add/length'
-```
-
+```text
 ---
 
 #### 6. Knowledge Transfer Documentation (BC-001)
@@ -895,6 +939,7 @@ cat metrics/model-performance.jsonl | jq -s 'map(.quality_score) | add/length'
 **Priority**: MEDIUM | **Effort**: MEDIUM (8 hours) | **Impact**: Reduces single point of failure
 
 **Implementation Steps**:
+
 ```bash
 # Create knowledge transfer guide
 cat > docs/operations/KNOWLEDGE_TRANSFER.md <<'EOF'
@@ -948,9 +993,9 @@ cat > docs/operations/runbooks/01-deployment.md <<'EOF'
 ## Step-by-Step Deployment
 [Detailed deployment steps]
 EOF
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Knowledge transfer guide created
 - ✅ 3+ runbooks documented (deployment, monitoring, incident response)
 - ✅ Emergency contacts documented and verified
@@ -966,6 +1011,7 @@ EOF
 **Priority**: LOW | **Effort**: HIGH (40 hours) | **Impact**: Provides vendor diversification
 
 **Implementation Outline**:
+
 ```bash
 # Step 1: Research alternative providers
 # - OpenAI GPT-4
@@ -984,9 +1030,9 @@ EOF
 
 # Step 5: Multi-provider fallback
 # Implement automatic failover to backup provider
-```
-
+```text
 **Success Criteria**:
+
 - ✅ 2+ alternative providers tested
 - ✅ Abstraction layer implemented
 - ✅ Comparative analysis documented
@@ -999,6 +1045,7 @@ EOF
 **Priority**: MEDIUM | **Effort**: HIGH (40 hours) | **Impact**: Improves AI recommendation quality
 
 **Implementation Outline**:
+
 ```bash
 # Step 1: Build hallucination test dataset
 # Create design documents with known issues
@@ -1017,9 +1064,9 @@ EOF
 # Step 4: Continuous improvement
 # Analyze hallucination patterns
 # Update prompts to reduce false positives
-```
-
+```text
 **Success Criteria**:
+
 - ✅ Hallucination test dataset created (50+ examples)
 - ✅ Detection accuracy >80%
 - ✅ User feedback mechanism implemented
@@ -1032,36 +1079,41 @@ EOF
 ### Monitoring Procedures
 
 **Daily**:
+
 - CloudWatch alarms for cost spikes
 - Error rate monitoring
 
 **Weekly**:
+
 - Security scan results review
 - Dependency vulnerability scanning
 
 **Monthly**:
+
 - Cost analysis and optimization
 - User feedback review
 
 **Quarterly**:
+
 - Comprehensive risk assessment review
 - IAM access review
 - Model performance baseline update
 
 **Annually**:
+
 - Disaster recovery testing
 - Third-party vendor assessment
 - Compliance audit
 
 ### Key Risk Indicators (KRIs)
 
-| Indicator | Target | Alert Threshold |
-|-----------|--------|-----------------|
-| Security vulnerabilities (HIGH) | 0 | >0 |
-| Cost per review | <$0.50 | >$1.00 |
-| AI error rate | <2% | >5% |
-| User-reported hallucinations | <5% | >10% |
-| Dependency updates behind | 0 | >30 days |
+| Indicator                         | Target   | Alert Threshold   |
+| ----------------------------------- | ---------- | ------------------- |
+| Security vulnerabilities (HIGH)   | 0        | >0                |
+| Cost per review                   | <$0.50   | >$1.00            |
+| AI error rate                     | <2%      | >5%               |
+| User-reported hallucinations      | <5%      | >10%              |
+| Dependency updates behind         | 0        | >30 days          |
 
 ---
 
@@ -1072,6 +1124,7 @@ EOF
 **Acceptance Date**: [To be filled]
 
 **Accepted Risks**:
+
 1. AI hallucinations (inherent to technology) - MEDIUM residual risk
 2. Model version changes (managed service limitation) - MEDIUM residual risk
 3. Data breach via user environment (user responsibility) - MEDIUM residual risk
@@ -1091,9 +1144,9 @@ EOF
 
 ## Change Log
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-03-19 | 1.0 | Initial risk assessment |
+| Date         | Version   | Changes                   |
+| -------------- | ----------- | --------------------------- |
+| 2026-03-19   | 1.0       | Initial risk assessment   |
 
 ---
 

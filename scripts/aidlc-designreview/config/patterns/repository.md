@@ -1,4 +1,6 @@
 <!--
+# Repository
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # Repository Pattern
 
 ## Category
+
 Data Management
 
 ## Description
+
 Mediates between the domain and data mapping layers using a collection-like interface for accessing domain objects. Provides a clean separation between business logic and data access code.
 
 ## When to Use
+
 Use repository pattern when you need to abstract data access, want to centralize data access logic, or need to switch between different data sources without changing business logic.
 
 ## Example
+
 A UserRepository interface with methods like findById, findAll, save, and delete. Implementation handles database queries while business logic works with domain objects through the repository interface.

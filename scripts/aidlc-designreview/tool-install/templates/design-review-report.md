@@ -13,29 +13,29 @@
 
 ## Metadata
 
-| Field | Value |
-|-------|-------|
-| **Timestamp** | {{TIMESTAMP}} |
-| **Tool Version** | 1.0 (Bash Hook) |
-| **Unit** | {{UNIT_NAME}} |
-| **Review Duration** | N/A |
-| **Model** | {{MODEL_NAME}} |
+| Field                 | Value             |
+| ----------------------- | ------------------- |
+| **Timestamp**         | {{TIMESTAMP}}     |
+| **Tool Version**      | 1.0 (Bash Hook)   |
+| **Unit**              | {{UNIT_NAME}}     |
+| **Review Duration**   | N/A               |
+| **Model**             | {{MODEL_NAME}}    |
 
 ### Severity Summary
 
-| Severity | Count |
-|----------|-------|
-| Critical | {{FINDINGS_CRITICAL}} |
-| High | {{FINDINGS_HIGH}} |
-| Medium | {{FINDINGS_MEDIUM}} |
-| Low | {{FINDINGS_LOW}} |
+| Severity   | Count                   |
+| ------------ | ------------------------- |
+| Critical   | {{FINDINGS_CRITICAL}}   |
+| High       | {{FINDINGS_HIGH}}       |
+| Medium     | {{FINDINGS_MEDIUM}}     |
+| Low        | {{FINDINGS_LOW}}        |
 
 ### Configuration
 
-| Setting | Value |
-|---------|-------|
-| Severity Threshold | medium |
-| Review Tool | AIDLC Design Review Hook v1.0 |
+| Setting              | Value                           |
+| ---------------------- | --------------------------------- |
+| Severity Threshold   | medium                          |
+| Review Tool          | AIDLC Design Review Hook v1.0   |
 
 ---
 
@@ -55,12 +55,12 @@ Design review for **{{UNIT_NAME}}** completed with **{{FINDINGS_TOTAL}}** total 
 
 ### Severity Distribution
 
-| Severity | Count |
-|----------|-------|
-| Critical | {{FINDINGS_CRITICAL}} |
-| High | {{FINDINGS_HIGH}} |
-| Medium | {{FINDINGS_MEDIUM}} |
-| Low | {{FINDINGS_LOW}} |
+| Severity   | Count                   |
+| ------------ | ------------------------- |
+| Critical   | {{FINDINGS_CRITICAL}}   |
+| High       | {{FINDINGS_HIGH}}       |
+| Medium     | {{FINDINGS_MEDIUM}}     |
+| Low        | {{FINDINGS_LOW}}        |
 
 ### Quality Assessment
 
@@ -71,6 +71,7 @@ Design review for **{{UNIT_NAME}}** completed with **{{FINDINGS_TOTAL}}** total 
 **Quality Label**: {{QUALITY_LABEL}}
 
 **Quality Thresholds**:
+
 - Excellent: 0-20
 - Good: 21-50
 - Needs Improvement: 51-80
@@ -104,11 +105,11 @@ Design review for **{{UNIT_NAME}}** completed with **{{FINDINGS_TOTAL}}** total 
 
 ### Agent Status
 
-| Agent | Status | Findings | Execution Time |
-|-------|--------|----------|---------------|
-| critique | Completed | {{FINDINGS_TOTAL}} | N/A |
-| alternatives | {{ALTERNATIVES_STATUS}} | {{ALTERNATIVES_COUNT}} | N/A |
-| gap | {{GAPS_STATUS}} | {{GAPS_TOTAL}} | N/A |
+| Agent          | Status                    | Findings                 | Execution Time   |
+| ---------------- | --------------------------- | -------------------------- | ------------------ |
+| critique       | Completed                 | {{FINDINGS_TOTAL}}       | N/A              |
+| alternatives   | {{ALTERNATIVES_STATUS}}   | {{ALTERNATIVES_COUNT}}   | N/A              |
+| gap            | {{GAPS_STATUS}}           | {{GAPS_TOTAL}}           | N/A              |
 
 ### Report Metadata
 
@@ -133,6 +134,7 @@ Design review for **{{UNIT_NAME}}** completed with **{{FINDINGS_TOTAL}}** total 
 - ✅ **Context-dependent** - May not consider organization-specific constraints or requirements
 
 **Limitations**:
+
 - AI models may produce biased, incomplete, or incorrect recommendations
 - Analysis is limited to information provided in design documents
 - Does not guarantee compliance with security, regulatory, or industry standards
@@ -141,6 +143,7 @@ Design review for **{{UNIT_NAME}}** completed with **{{FINDINGS_TOTAL}}** total 
 **No Warranties**: This report is provided "AS IS" without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. The authors and providers assume no liability for any errors, omissions, or damages arising from the use of this report.
 
 **User Responsibility**: Users are solely responsible for:
+
 - Validating all recommendations before implementation
 - Verifying compliance with applicable standards and regulations
 - Conducting thorough security and architectural reviews

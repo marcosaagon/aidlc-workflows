@@ -1,4 +1,6 @@
 <!--
+# Rpc
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # RPC (Remote Procedure Call)
 
 ## Category
+
 Communication
 
 ## Description
+
 Allows a program to execute procedures on a remote system as if they were local calls. Modern implementations include gRPC with protocol buffers, enabling efficient, type-safe inter-service communication.
 
 ## When to Use
+
 Use RPC for synchronous service-to-service communication, when you need strong typing and code generation, or when performance is critical in microservices communication.
 
 ## Example
+
 A microservices system using gRPC where services define APIs using protocol buffers. Clients make type-safe calls to remote services with automatic serialization and strong contracts.

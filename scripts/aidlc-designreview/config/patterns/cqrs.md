@@ -1,4 +1,6 @@
 <!--
+# Cqrs
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # CQRS (Command Query Responsibility Segregation)
 
 ## Category
+
 Data Management
 
 ## Description
+
 Separates read and write operations into different models. Commands modify state while queries return data. This allows optimization of each path independently and different data models for reads and writes.
 
 ## When to Use
+
 Use CQRS when read and write workloads are significantly different, when you need different consistency guarantees for reads and writes, or when complex domain logic makes unified models difficult.
 
 ## Example
+
 An application with write model using normalized database for commands and read model using denormalized views for queries. Events synchronize read model after write operations complete.

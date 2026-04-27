@@ -1,4 +1,5 @@
-<!--
+<!-- markdownlint-disable MD041 MD051 MD060 -->
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,6 +53,7 @@ This document provides comprehensive security guidelines for using Amazon Bedroc
 **Amazon Bedrock** is a fully managed service that provides access to foundation models from leading AI companies through a single API.
 
 **Models Used**:
+
 - Anthropic Claude Opus 4.6
 - Anthropic Claude Sonnet 4.6
 - Anthropic Claude Haiku 4.5
@@ -72,16 +74,16 @@ Amazon Bedrock, like all AWS services, operates under the **AWS Shared Responsib
 
 AWS is responsible for protecting the infrastructure that runs Amazon Bedrock:
 
-| AWS Responsibility | Description |
-|-------------------|-------------|
-| **Physical Security** | Data center physical access controls, environmental controls |
-| **Infrastructure Security** | Host operating system, virtualization layer, network infrastructure |
-| **Service Availability** | Amazon Bedrock service uptime, regional failover, service scaling |
-| **Model Infrastructure** | Security of foundation model hosting, model isolation between customers |
-| **API Endpoints** | TLS/HTTPS enforcement, DDoS protection, API gateway security |
-| **Data Durability** | Amazon Bedrock Guardrail configurations, service-level encryption |
-| **Compliance Certifications** | SOC 2, ISO 27001, PCI DSS, HIPAA eligibility (AWS infrastructure) |
-| **Network Security** | VPC endpoint security, AWS network segmentation |
+| AWS Responsibility              | Description                                                               |
+| --------------------------------- | --------------------------------------------------------------------------- |
+| **Physical Security**           | Data center physical access controls, environmental controls              |
+| **Infrastructure Security**     | Host operating system, virtualization layer, network infrastructure       |
+| **Service Availability**        | Amazon Bedrock service uptime, regional failover, service scaling         |
+| **Model Infrastructure**        | Security of foundation model hosting, model isolation between customers   |
+| **API Endpoints**               | TLS/HTTPS enforcement, DDoS protection, API gateway security              |
+| **Data Durability**             | Amazon Bedrock Guardrail configurations, service-level encryption         |
+| **Compliance Certifications**   | SOC 2, ISO 27001, PCI DSS, HIPAA eligibility (AWS infrastructure)         |
+| **Network Security**            | VPC endpoint security, AWS network segmentation                           |
 
 **AWS Commitment**: AWS maintains certifications and attestations for the Bedrock service infrastructure.
 
@@ -89,21 +91,22 @@ AWS is responsible for protecting the infrastructure that runs Amazon Bedrock:
 
 Customers are responsible for security controls within the AIDLC Design Reviewer application:
 
-| Customer Responsibility | Implementation in AIDLC Design Reviewer |
-|------------------------|----------------------------------------|
-| **IAM Access Management** | ✅ Configure IAM policies with least-privilege<br/>✅ Use temporary credentials (IAM roles, STS)<br/>⚠️ Enable MFA for AWS console access |
-| **Data Classification** | ✅ Classify design documents (Public, Internal, Confidential)<br/>✅ Avoid sending PII or sensitive customer data to Amazon Bedrock<br/>See [DATA_CLASSIFICATION_AND_ENCRYPTION.md](./DATA_CLASSIFICATION_AND_ENCRYPTION.md) |
-| **Data Protection** | ✅ Encrypt data in transit (TLS 1.2+)<br/>⚠️ Encrypt data at rest (OS-level disk encryption)<br/>✅ Credential scrubbing in logs |
-| **Input Validation** | ✅ Validate design document size and format<br/>✅ Sanitize inputs before sending to Amazon Bedrock |
-| **Output Handling** | ✅ Parse AI responses with strict validation<br/>✅ Sanitize AI outputs in HTML reports (XSS prevention) |
-| **Guardrails Configuration** | ⚠️ Configure Amazon Bedrock Guardrails (optional but recommended)<br/>⚠️ Define content filters and prompt attack detection |
-| **Logging and Monitoring** | ✅ Local application logs<br/>⚠️ Enable CloudWatch logging (optional)<br/>⚠️ Enable AWS CloudTrail for API audit trail |
-| **Compliance** | ❌ Customer determines applicability of compliance frameworks<br/>❌ Customer responsible for compliance attestation<br/>See [Compliance Disclaimers](#compliance-disclaimers) below |
-| **Application Security** | ✅ Secure application code (Bandit, Semgrep scanning)<br/>✅ Dependency vulnerability management (pip-audit)<br/>✅ Secure configuration management |
-| **Incident Response** | ❌ Customer defines incident response procedures<br/>⚠️ Monitor for unusual Amazon Bedrock usage<br/>⚠️ Investigate unauthorized API calls (CloudTrail) |
-| **Cost Management** | ⚠️ Set AWS Budgets alerts for unexpected costs<br/>⚠️ Monitor token usage and optimize prompts<br/>✅ Application implements token limits |
+| Customer Responsibility        | Implementation in AIDLC Design Reviewer                                                                                                                                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **IAM Access Management**      | ✅ Configure IAM policies with least-privilege<br/>✅ Use temporary credentials (IAM roles, STS)<br/>⚠️ Enable MFA for AWS console access                                                                                     |
+| **Data Classification**        | ✅ Classify design documents (Public, Internal, Confidential)<br/>✅ Avoid sending PII or sensitive customer data to Amazon Bedrock<br/>See [DATA_CLASSIFICATION_AND_ENCRYPTION.md](./DATA_CLASSIFICATION_AND_ENCRYPTION.md)  |
+| **Data Protection**            | ✅ Encrypt data in transit (TLS 1.2+)<br/>⚠️ Encrypt data at rest (OS-level disk encryption)<br/>✅ Credential scrubbing in logs                                                                                              |
+| **Input Validation**           | ✅ Validate design document size and format<br/>✅ Sanitize inputs before sending to Amazon Bedrock                                                                                                                           |
+| **Output Handling**            | ✅ Parse AI responses with strict validation<br/>✅ Sanitize AI outputs in HTML reports (XSS prevention)                                                                                                                      |
+| **Guardrails Configuration**   | ⚠️ Configure Amazon Bedrock Guardrails (optional but recommended)<br/>⚠️ Define content filters and prompt attack detection                                                                                                   |
+| **Logging and Monitoring**     | ✅ Local application logs<br/>⚠️ Enable CloudWatch logging (optional)<br/>⚠️ Enable AWS CloudTrail for API audit trail                                                                                                        |
+| **Compliance**                 | ❌ Customer determines applicability of compliance frameworks<br/>❌ Customer responsible for compliance attestation<br/>See [Compliance Disclaimers](#compliance-disclaimers) below                                          |
+| **Application Security**       | ✅ Secure application code (Bandit, Semgrep scanning)<br/>✅ Dependency vulnerability management (pip-audit)<br/>✅ Secure configuration management                                                                           |
+| **Incident Response**          | ❌ Customer defines incident response procedures<br/>⚠️ Monitor for unusual Amazon Bedrock usage<br/>⚠️ Investigate unauthorized API calls (CloudTrail)                                                                       |
+| **Cost Management**            | ⚠️ Set AWS Budgets alerts for unexpected costs<br/>⚠️ Monitor token usage and optimize prompts<br/>✅ Application implements token limits                                                                                     |
 
 **Legend**:
+
 - ✅ Implemented in AIDLC Design Reviewer
 - ⚠️ Requires customer configuration or action
 - ❌ Customer responsibility (not implemented by application)
@@ -112,16 +115,16 @@ Customers are responsible for security controls within the AIDLC Design Reviewer
 
 Some security controls are **shared** between AWS and the customer:
 
-| Shared Area | AWS Responsibility | Customer Responsibility |
-|------------|-------------------|------------------------|
-| **Encryption** | Provide encryption capabilities (TLS, KMS) | Enable and configure encryption for data at rest |
-| **Patch Management** | Patch Amazon Bedrock service and infrastructure | Patch application dependencies (Python packages) |
-| **Configuration Management** | Provide secure defaults for Amazon Bedrock | Configure Amazon Bedrock Guardrails, IAM policies |
-| **Training and Awareness** | Provide security documentation and best practices | Train developers on secure Amazon Bedrock usage |
+| Shared Area                    | AWS Responsibility                                  | Customer Responsibility                             |
+| -------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| **Encryption**                 | Provide encryption capabilities (TLS, KMS)          | Enable and configure encryption for data at rest    |
+| **Patch Management**           | Patch Amazon Bedrock service and infrastructure     | Patch application dependencies (Python packages)    |
+| **Configuration Management**   | Provide secure defaults for Amazon Bedrock          | Configure Amazon Bedrock Guardrails, IAM policies   |
+| **Training and Awareness**     | Provide security documentation and best practices   | Train developers on secure Amazon Bedrock usage     |
 
 ### Security Responsibilities Summary
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    CUSTOMER RESPONSIBILITY                   │
 │  • IAM Policies & Credentials                               │
@@ -141,8 +144,7 @@ Some security controls are **shared** between AWS and the customer:
 │  • API Endpoint Security (TLS, DDoS)                        │
 │  • AWS Infrastructure Compliance Certifications             │
 └─────────────────────────────────────────────────────────────┘
-```
-
+```text
 ### Compliance Disclaimers
 
 **IMPORTANT**: While AWS maintains compliance certifications for the Amazon Bedrock infrastructure, **customers are responsible for their own compliance attestation** when using AIDLC Design Reviewer:
@@ -163,11 +165,13 @@ Some security controls are **shared** between AWS and the customer:
 **Requirement**: Application MUST use temporary credentials (IAM roles, AWS STS, AWS SSO)
 
 **Rationale**:
+
 - Long-term access keys are vulnerable to theft
 - Temporary credentials auto-expire (reducing exposure window)
 - Supports automatic credential rotation
 
 **Implementation**:
+
 ```python
 # ✅ CORRECT: Use AWS profile with IAM role
 session = boto3.Session(profile_name='aidlc-app-role')
@@ -179,17 +183,16 @@ bedrock_client = session.client('bedrock-runtime', region_name='us-east-1')
 #     aws_access_key_id='AKIA...',
 #     aws_secret_access_key='...'
 # )
-```
-
+```text
 **Verification**:
+
 ```bash
 # Check credential type
 aws sts get-caller-identity --profile aidlc-app-role
 
 # Temporary credentials will show:
 # "Arn": "arn:aws:sts::ACCOUNT-ID:assumed-role/ROLE-NAME/session"
-```
-
+```text
 ---
 
 ### 2. Implement Least-Privilege IAM Policies
@@ -197,6 +200,7 @@ aws sts get-caller-identity --profile aidlc-app-role
 **Requirement**: Grant ONLY necessary permissions for Amazon Bedrock
 
 **Minimal IAM Policy**:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -220,9 +224,9 @@ aws sts get-caller-identity --profile aidlc-app-role
     }
   ]
 }
-```
-
+```text
 **With Guardrails**:
+
 ```json
 {
   "Sid": "BedrockGuardrails",
@@ -235,9 +239,9 @@ aws sts get-caller-identity --profile aidlc-app-role
     "arn:aws:bedrock:us-east-1:ACCOUNT-ID:guardrail/*"
   ]
 }
-```
-
+```text
 **Prohibited Permissions**:
+
 - ❌ `bedrock:*` (overly permissive)
 - ❌ Wildcard model resources (`arn:aws:bedrock:*:*:foundation-model/*`)
 - ❌ Administrative actions (`CreateGuardrail`, `DeleteGuardrail` for app role)
@@ -249,6 +253,7 @@ aws sts get-caller-identity --profile aidlc-app-role
 **Requirement**: Restrict API calls to approved AWS regions
 
 **Implementation**:
+
 ```json
 {
   "Condition": {
@@ -257,14 +262,15 @@ aws sts get-caller-identity --profile aidlc-app-role
     }
   }
 }
-```
-
+```text
 **Rationale**:
+
 - Data residency compliance
 - Cost control (prevent accidental cross-region usage)
 - Simplified auditing
 
 **Approved Regions**:
+
 - **Primary**: `us-east-1` (US East, N. Virginia)
 - **Backup**: `us-west-2` (US West, Oregon) - if needed
 
@@ -275,6 +281,7 @@ aws sts get-caller-identity --profile aidlc-app-role
 **Requirement**: Require MFA for human users accessing AWS console
 
 **IAM Policy with MFA Enforcement**:
+
 ```json
 {
   "Condition": {
@@ -283,9 +290,9 @@ aws sts get-caller-identity --profile aidlc-app-role
     }
   }
 }
-```
-
+```text
 **Does Not Apply To**:
+
 - IAM roles (used by application) - MFA enforced on role assumption
 - Service accounts (use least-privilege instead)
 
@@ -298,19 +305,21 @@ aws sts get-caller-identity --profile aidlc-app-role
 **Requirement**: ALL API calls to Amazon Bedrock MUST use TLS 1.2 or higher
 
 **Implementation**:
+
 - ✅ boto3 enforces HTTPS by default
 - ✅ Certificate validation enabled
 - ✅ No option to disable TLS
 
 **Verification**:
+
 ```python
 # boto3 automatically uses HTTPS
 # Manual verification:
 import ssl
 print(ssl.OPENSSL_VERSION)  # Ensure OpenSSL 1.1.1+
-```
-
+```text
 **Prohibited**:
+
 - ❌ HTTP endpoints (not supported by Amazon Bedrock)
 - ❌ Disabling certificate validation
 - ❌ TLS 1.0 or 1.1 (deprecated)
@@ -322,12 +331,14 @@ print(ssl.OPENSSL_VERSION)  # Ensure OpenSSL 1.1.1+
 **Requirement**: Validate ALL inputs before sending to Amazon Bedrock
 
 **Validation Checks**:
+
 1. **Type Validation**: Verify input is string
 2. **Size Validation**: Limit to prevent excessive costs
 3. **Content Validation**: Check for suspicious patterns
 4. **Encoding Validation**: Verify UTF-8 encoding
 
 **Implementation**:
+
 ```python
 def validate_bedrock_input(prompt: str, max_length: int = 750000) -> str:
     # Type check
@@ -344,9 +355,9 @@ def validate_bedrock_input(prompt: str, max_length: int = 750000) -> str:
         prompt = prompt[:max_length]
 
     return prompt
-```
-
+```text
 **Rationale**:
+
 - Prevents injection attacks
 - Limits cost exposure
 - Ensures API contract compliance
@@ -358,6 +369,7 @@ def validate_bedrock_input(prompt: str, max_length: int = 750000) -> str:
 **Requirement**: Parse and validate ALL responses from Amazon Bedrock
 
 **Implementation**:
+
 ```python
 def parse_bedrock_response(response: dict) -> str:
     # Only extract expected fields (defense in depth)
@@ -367,9 +379,9 @@ def parse_bedrock_response(response: dict) -> str:
         return text
     except (KeyError, IndexError, json.JSONDecodeError) as e:
         raise ValueError(f"Invalid Bedrock response structure: {e}")
-```
-
+```text
 **Rationale**:
+
 - Prevents unexpected data from reaching application
 - Validates API contract compliance
 - Protects against malformed responses
@@ -381,6 +393,7 @@ def parse_bedrock_response(response: dict) -> str:
 **Requirement**: Enable Guardrails for production workloads
 
 **Guardrail Configuration**:
+
 ```yaml
 # config.yaml
 aws:
@@ -388,9 +401,9 @@ aws:
   profile_name: aidlc-app-role
   guardrail_id: abc123xyz  # Required for production
   guardrail_version: "1"
-```
-
+```text
 **Guardrail Protections**:
+
 - Content filtering (hate, violence, sexual, misconduct)
 - Denied topics (PII, financial, medical, legal advice)
 - Word filters (profanity, credentials)
@@ -408,6 +421,7 @@ aws:
 **Requirement**: Remove ALL sensitive data from logs before writing
 
 **Implementation**:
+
 ```python
 import re
 
@@ -421,9 +435,9 @@ def scrub_sensitive_data(log_message: str) -> str:
     for pattern, replacement in CREDENTIAL_PATTERNS:
         log_message = re.sub(pattern, replacement, log_message)
     return log_message
-```
-
+```text
 **Scrubbed Data Types**:
+
 - AWS access keys (AKIA...)
 - AWS secret keys (40-character base64)
 - API tokens
@@ -437,11 +451,13 @@ def scrub_sensitive_data(log_message: str) -> str:
 **Requirement**: Do NOT store raw LLM responses in persistent storage
 
 **Rationale**:
+
 - Potential PII exposure (if Guardrails bypass)
 - Reduces data breach impact
 - Simplifies compliance (no long-term AI data storage)
 
 **Implementation**:
+
 ```python
 # ✅ CORRECT: Transient processing
 response = bedrock_client.invoke_model(...)
@@ -451,8 +467,7 @@ del response  # Discard raw response
 # ❌ INCORRECT: Do not persist raw responses
 # with open('bedrock_responses.log', 'a') as f:
 #     f.write(str(response))
-```
-
+```text
 **Exception**: CloudWatch Logs (optional, with retention policy)
 
 ---
@@ -464,6 +479,7 @@ del response  # Discard raw response
 **Requirement**: Monitor Amazon Bedrock usage via CloudWatch
 
 **Key Metrics**:
+
 - `Invocations`: Total API calls
 - `InvocationLatency`: Response time
 - `InvocationClientErrors`: 4xx errors
@@ -472,6 +488,7 @@ del response  # Discard raw response
 - `OutputTokens`: Tokens generated
 
 **Alarms**:
+
 ```bash
 # High error rate alarm
 aws cloudwatch put-metric-alarm \
@@ -482,8 +499,7 @@ aws cloudwatch put-metric-alarm \
   --period 300 \
   --threshold 10 \
   --comparison-operator GreaterThanThreshold
-```
-
+```text
 ---
 
 ### 12. Enable CloudWatch Logs
@@ -491,6 +507,7 @@ aws cloudwatch put-metric-alarm \
 **Requirement**: Log ALL Amazon Bedrock API calls for audit purposes
 
 **Configuration**:
+
 ```python
 import logging
 
@@ -514,8 +531,7 @@ logger.info(
         'cost_usd': cost
     }
 )
-```
-
+```text
 **Retention**: 90 days minimum (compliance requirement)
 
 ---
@@ -525,6 +541,7 @@ logger.info(
 **Requirement**: Log ALL management API calls to Amazon Bedrock
 
 **Logged Actions**:
+
 - `InvokeModel` (data plane)
 - `ApplyGuardrail` (data plane)
 - `CreateGuardrail` (control plane)
@@ -641,8 +658,7 @@ aws s3api put-bucket-lifecycle-configuration \
       }
     }]
   }'
-```
-
+```text
 **⚠️ Security Note - S3 Bucket Policy**:
 
 This `Deny` statement blocks insecure HTTP access to the CloudTrail bucket by denying specific data access actions when `aws:SecureTransport` is false. We use explicit action list (`s3:GetObject`, `s3:PutObject`, etc.) rather than `s3:*` wildcard to follow least privilege principles, even for Deny statements.
@@ -652,6 +668,7 @@ This `Deny` statement blocks insecure HTTP access to the CloudTrail bucket by de
 **See Also**: [AWS IAM Best Practices - Grant Least Privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege)
 
 **S3 Security Checklist**:
+
 - ✅ Block Public Access enabled (all 4 settings)
 - ✅ Bucket encryption enabled (SSE-S3)
 - ✅ Versioning enabled
@@ -661,14 +678,14 @@ This `Deny` statement blocks insecure HTTP access to the CloudTrail bucket by de
 - ⚠️ MFA Delete recommended for production (requires root account)
 
 **MFA Delete Configuration** (Optional - Production Recommended):
+
 ```bash
 # Enable MFA Delete (requires root account credentials)
 aws s3api put-bucket-versioning \
   --bucket aidlc-cloudtrail-logs \
   --versioning-configuration Status=Enabled,MFADelete=Enabled \
   --mfa "arn:aws:iam::ACCOUNT_ID:mfa/root-account-mfa-device XXXXXX"
-```
-
+```text
 #### Step 2: Create CloudTrail Trail
 
 ```bash
@@ -694,15 +711,16 @@ aws cloudtrail put-event-selectors \
       "Values": ["arn:aws:bedrock:*:*:*"]
     }]
   }]'
-```
-
+```text
 **CloudTrail Security Features Enabled**:
+
 - ✅ Multi-region trail (captures all regions)
 - ✅ Log file validation (integrity checking)
 - ✅ Encryption at rest (via S3 bucket encryption)
 - ✅ Secure transport (via S3 bucket policy)
 
 **Use Cases**:
+
 - Security incident investigation
 - Compliance audits
 - Cost analysis
@@ -719,6 +737,7 @@ aws cloudtrail put-event-selectors \
 **Strategies**:
 
 1. **CloudWatch Cost Alarms**:
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name "AIDLC-Bedrock-Daily-Cost" \
@@ -728,9 +747,9 @@ aws cloudwatch put-metric-alarm \
   --period 86400 \
   --threshold 50 \
   --comparison-operator GreaterThanThreshold
-```
+```text
+1. **Input Token Limits**:
 
-2. **Input Token Limits**:
 ```python
 MAX_INPUT_TOKENS = 200000  # Model max
 MAX_PROMPT_CHARS = 750000  # ~187k tokens at 4 chars/token
@@ -738,19 +757,20 @@ MAX_PROMPT_CHARS = 750000  # ~187k tokens at 4 chars/token
 if len(prompt) > MAX_PROMPT_CHARS:
     logger.warning("Prompt too large, truncating")
     prompt = prompt[:MAX_PROMPT_CHARS]
-```
+```text
+1. **Budget Allocation**:
 
-3. **Budget Allocation**:
 - Set AWS Budgets for Amazon Bedrock spend
 - Receive alerts at 80%, 100%, 120% of budget
 - Review monthly spending reports
 
 **Cost Estimates**:
-| Model | Input Cost | Output Cost | Typical Review Cost |
-|-------|-----------|-------------|---------------------|
-| Claude Opus 4.6 | $15/M tokens | $75/M tokens | $1.50 |
-| Claude Sonnet 4.6 | $3/M tokens | $15/M tokens | $0.30 |
-| Claude Haiku 4.5 | $0.25/M tokens | $1.25/M tokens | $0.05 |
+
+| Model               | Input Cost       | Output Cost      | Typical Review Cost   |
+| --------------------- | ------------------ | ------------------ | ----------------------- |
+| Claude Opus 4.6     | $15/M tokens     | $75/M tokens     | $1.50                 |
+| Claude Sonnet 4.6   | $3/M tokens      | $15/M tokens     | $0.30                 |
+| Claude Haiku 4.5    | $0.25/M tokens   | $1.25/M tokens   | $0.05                 |
 
 ---
 
@@ -766,6 +786,7 @@ if len(prompt) > MAX_PROMPT_CHARS:
 4. **Caching**: Reuse pattern library across reviews (done)
 
 **Implementation**:
+
 ```python
 # Use appropriate model for task
 classifier = ArtifactClassifier(
@@ -775,8 +796,7 @@ classifier = ArtifactClassifier(
 critique_agent = CritiqueAgent(
     model_id='claude-sonnet-4-6'  # Balance cost and quality
 )
-```
-
+```text
 ---
 
 ## Compliance and Governance
@@ -786,12 +806,14 @@ critique_agent = CritiqueAgent(
 **Requirement**: Review IAM permissions quarterly
 
 **Process**:
+
 1. Export all IAM roles/users with Amazon Bedrock permissions
 2. Verify each principal still requires access
 3. Remove inactive accounts (no usage in 90 days)
 4. Document changes
 
 **Automation**:
+
 ```bash
 # List all principals with Bedrock access
 aws iam list-policies --query 'Policies[?PolicyName==`BedrockAccess`]'
@@ -800,8 +822,7 @@ aws iam list-policies --query 'Policies[?PolicyName==`BedrockAccess`]'
 aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=EventName,AttributeValue=InvokeModel \
   --start-time $(date -d '90 days ago' +%s)
-```
-
+```text
 ---
 
 ### 17. Maintain Audit Trail
@@ -809,6 +830,7 @@ aws cloudtrail lookup-events \
 **Requirement**: Retain Amazon Bedrock usage logs for 1 year minimum
 
 **Retention Policies**:
+
 - CloudWatch Logs: 365 days
 - CloudTrail: 90 days (active), 7 years (archive to S3 Glacier)
 - Application Logs: 90 days
@@ -832,6 +854,7 @@ aws cloudtrail lookup-events \
 **Requirement**: Define procedures for Amazon Bedrock security incidents
 
 **Incident Types**:
+
 1. Unauthorized access (compromised credentials)
 2. Cost spike (runaway usage)
 3. Service degradation (high error rate)
@@ -840,6 +863,7 @@ aws cloudtrail lookup-events \
 **Response Procedures**:
 
 **Incident: Compromised Credentials**
+
 1. Revoke AWS credentials immediately
 2. Analyze CloudTrail for unauthorized API calls
 3. Assess damage (data accessed, cost incurred)
@@ -847,6 +871,7 @@ aws cloudtrail lookup-events \
 5. Implement additional MFA/SCPs
 
 **Incident: Cost Spike**
+
 1. Check CloudWatch for usage spike
 2. Identify source (user, application, runaway loop)
 3. Disable offending credentials/application
@@ -854,15 +879,16 @@ aws cloudtrail lookup-events \
 5. Implement cost controls (budgets, alarms)
 
 **Contact**:
+
 - AWS Support: Open high-priority ticket
-- Security Team: security-team@example.com
+- Security Team: <security-team@example.com>
 - On-Call Engineer: via PagerDuty
 
 ---
 
 ## Prohibited Practices
 
-### ❌ Do NOT Do the Following:
+### ❌ Do NOT Do the Following
 
 1. **Use Long-Term Access Keys**: Only temporary credentials permitted
 2. **Hardcode Credentials**: No credentials in code, configs, or environment variables
@@ -882,12 +908,14 @@ aws cloudtrail lookup-events \
 Use this checklist before deploying to production:
 
 ### Authentication & Authorization
+
 - [ ] Application uses temporary credentials (IAM role, STS, SSO)
 - [ ] IAM policy implements least-privilege (specific models only)
 - [ ] Regional restrictions enforced (us-east-1 only)
 - [ ] MFA enabled for human users
 
 ### Data Protection
+
 - [ ] TLS 1.2+ enforced (boto3 default)
 - [ ] Input validation implemented (type, size, content)
 - [ ] Output filtering implemented (structured parsing)
@@ -896,6 +924,7 @@ Use this checklist before deploying to production:
 - [ ] No permanent storage of raw LLM responses
 
 ### Monitoring & Logging
+
 - [ ] CloudWatch metrics enabled
 - [ ] CloudWatch Logs configured (90-day retention)
 - [ ] AWS CloudTrail enabled
@@ -903,12 +932,14 @@ Use this checklist before deploying to production:
 - [ ] Error rate alarms configured (>5% threshold)
 
 ### Compliance
+
 - [ ] IAM access review process documented
 - [ ] Audit trail retention policy defined (1 year)
 - [ ] Incident response plan documented
 - [ ] Security guidelines reviewed and approved
 
 ### Cost Management
+
 - [ ] Token usage limits configured
 - [ ] AWS Budgets configured
 - [ ] Model selection optimized (Haiku for classification, Sonnet for review)
@@ -927,6 +958,6 @@ Use this checklist before deploying to production:
 
 ## Change Log
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-03-19 | 1.0 | Initial AWS Amazon Bedrock security guidelines |
+| Date         | Version   | Changes                                          |
+| -------------- | ----------- | -------------------------------------------------- |
+| 2026-03-19   | 1.0       | Initial AWS Amazon Bedrock security guidelines   |

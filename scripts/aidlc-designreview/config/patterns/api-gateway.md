@@ -1,4 +1,6 @@
 <!--
+# Api Gateway
+
 Copyright (c) 2026 AIDLC Design Reviewer Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +25,17 @@ SOFTWARE.
 # API Gateway
 
 ## Category
+
 Communication
 
 ## Description
+
 Provides a single entry point for clients to access multiple backend services. The gateway handles request routing, composition, protocol translation, authentication, and rate limiting.
 
 ## When to Use
+
 Use API gateway in microservices architecture, when you need to aggregate multiple service calls, or when implementing cross-cutting concerns like authentication and rate limiting centrally.
 
 ## Example
+
 A mobile app accessing an e-commerce system through a single API gateway that routes requests to user, product, order, and payment services while handling authentication and rate limiting.
