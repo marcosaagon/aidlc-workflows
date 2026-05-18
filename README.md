@@ -44,6 +44,9 @@ python -m aidlc_workflows run --workflow <workflow-name>
 
 # List available workflows
 python -m aidlc_workflows list
+
+# Run with verbose output (useful for debugging)
+python -m aidlc_workflows run --workflow <workflow-name> --verbose
 ```
 
 ## Project Structure
